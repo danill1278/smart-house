@@ -1,2 +1,2 @@
-# smat-house
+# smart-house
 Smart House using prototype OOP
