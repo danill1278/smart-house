@@ -86,15 +86,6 @@ SmartKettle.prototype.info = function() {
         currentFullness: ${this.__currentFullness};
     `);
 };
-/*SmartKettle.prototype.on = function() {
-  Machine.prototype.on.call(this);
-  console.log("ON");
-};
-
-SmartKettle.prototype.off = function() {
-  Machine.prototype.off.call(this);
-  console.log("OFF");
-};*/
 
 SmartKettle.prototype.setTemperature = function(value) {
   if (typeof value == "number" && value >= 10 && value <= 70) {
