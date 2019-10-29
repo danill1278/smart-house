@@ -5,6 +5,7 @@ function Machine(name) {
         //default name
         this._name = 'default';
     }
+    // device on/off
     this._state = false;
 }
 
@@ -17,24 +18,29 @@ Machine.prototype.getName = function () {
 };
 
 Machine.prototype.setName = function (name) {
-    if ( this._checkNameValidity(name)) {
+    if(this._checkNameValidity(name)) {
         this._name = name;
-    }    
+    }
 };
 
 Machine.prototype._isDeviceOn = function () {
-    if (!this.getState()) throw new Error('Turn on device, please!');
-};
+    if (!this.getState()) {
+      throw new Error("Turn on device, please!");
+    }
+    return true;
+  };
 
 
 Machine.prototype._checkNameValidity = function (name) {
-    const regex = /^\w{2,10}/i;
+    if (typeof name !== 'string') {
+        throw new Error("Name must be a string");
+    }
+    const regex = /^[A-z0-9\s]{5,10}/;
     const result = name.match(regex);
     if (result) {
-        this._name = result[0];
         return true;
     } else {
-        throw new Error("Name must be a string and contain 5-10 characters");
+        throw new Error("Name must contain 5-10 characters");
     }
 };
 
@@ -47,6 +53,12 @@ Machine.prototype.off = function () {
 };
 
 
-Machine.prototype._deleteTimer = function() {
+Machine.prototype._deleteTimer = function () {
     clearInterval(this._timer);
+};
+
+Machine.prototype.info = function () {
+    return `
+        name: ${this.getName()},
+        status: ${this.getState()}`;
 };

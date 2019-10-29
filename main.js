@@ -8,7 +8,7 @@ let Machine = function (name) {
   this._state = false;
 };
 Machine.prototype.info = function () {
-  console.log(`
+  return `
         name: ${this._name};
         state: ${this._state};`);
 };
@@ -79,8 +79,8 @@ SmartKettle.prototype = Object.create(Machine.prototype);
 SmartKettle.prototype.constructor = SmartKettle;
 
 SmartKettle.prototype.info = function () {
-  Machine.prototype.info.call(this);
   console.log(`
+        ${Machine.prototype.info.call(this)}
         mode: ${this.__currentMode};
         currentFullness: ${this.__currentFullness};
     `);
