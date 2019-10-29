@@ -24,3 +24,4 @@ class Machine {
 
         #deleteTimer(): void
 }
+Class SmartKettle
