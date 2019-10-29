@@ -42,7 +42,7 @@ class Speaker {
 
     methods:
         //constructor
-        +Speaker( name: String, trackList: [Object])   
+        +Speaker( trackList: [Object], name: String)   
 
         // turn device to play/pause modes
         +togglePlaybackStatus(): void 

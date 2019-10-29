@@ -23,4 +23,6 @@ class Machine {
         #checkNameValidity(): Boolean
 
         #deleteTimer(): void
+
+        #info(): String
 }
