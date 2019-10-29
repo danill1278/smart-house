@@ -1,0 +1,24 @@
+{
+  "name": "smart-house",
+  "version": "1.0.0",
+  "description": "Smart House using prototype OOP",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danill1278/smart-house.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danill1278/smart-house/issues"
+  },
+  "homepage": "https://github.com/danill1278/smart-house#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-google": "^0.14.0",
+    "prettier": "^1.18.2"
+  }
+}
