@@ -1,0 +1,26 @@
+{
+  "name": "smart-house",
+  "version": "1.0.0",
+  "description": "Smart House using prototype OOP",
+  "main": "speaker.js",
+  "dependencies": {
+    "jshint": "^2.10.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danill1278/smart-house.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danill1278/smart-house/issues"
+  },
+  "homepage": "https://github.com/danill1278/smart-house#readme",
+  "jshintConfig": {
+    "esversion": "6"
+  }
+}

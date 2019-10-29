@@ -1,37 +1,40 @@
 function Speaker(name, trackList) {
-    if (typeof name === 'string' && name.length > 1) {
-        this._name = name;
-    } else {
-        this._name = 'Jeka Active';
-    }
 
+    // device on/off
     this._state = false;
+    // device play/pause
     this._playbackState = false;
 
+    //volume controls
     this._volumeMin = 0;
     this._volumeMax = 10;
     this._currentVolume = 5;
 
+    //is flash card in device
     this._flashCard = true;
 
+    //track duration timer count
     this._timer = null;
     this._currentTimerValue = 0;
 
-    if (Array.isArray(trackList)) {
+    // initializing of track-list
+    if (Array.isArray(trackList) && trackList.length) {
+        // tracklist passed in constructor
         trackList.forEach(track => {
             if (!('name' in track &&
-                    typeof track['name'] === 'string' &&
-                    track['name'] &&
+                    typeof track.name === 'string' &&
+                    track.name &&
                     'duration' in track &&
-                    typeof track['duration'] === 'number' &&
-                    track['duration'] > 0)) {
+                    typeof track.duration === 'number' &&
+                    track.duration > 0)) {
 
                 throw new Error(`Invalid input tracklist data`);
-            };
+            }
 
             this._trackList = trackList;
-        })
+        });
     } else {
+        //default tracklist
         this._trackList = [{
                 name: 'Song 1',
                 duration: 8
@@ -52,226 +55,238 @@ function Speaker(name, trackList) {
                 name: 'Song 5',
                 duration: 10
             }
-        ]
+        ];
     }
 
+    // name passed in constructor
+    if (typeof name === 'string' && name.length > 1) {
+        this._name = name;
+    } else {
+        //default name
+        this._name = 'Jeka Active';
+    }
+
+    // track wich playing now
     this._currentTrack = 0;
+}
 
-    // methods:
-    this.on = function () {
-        this._state = true;
+// methods:
 
-        // check is device has flash card
-        if (this._flashCard) {
-            this.togglePlaybackStatus();
-        }
-    }
+//////////////
+Speaker.prototype.on = function () {
+    console.log(this);
 
-    this.off = function () {
-        this.isDeviceOn();
+    this._state = true;
 
-        // set device in pause mode
+    // check is device has flash card
+    if (this._flashCard) {
         this.togglePlaybackStatus();
-
-        // turn off device
-        this._state = false;
-
     }
+};
 
-    // log info about current device state
-    this.info = function () {
-        console.log(`
+Speaker.prototype.off = function () {
+    this._isDeviceOn();
+
+    // set device in pause mode
+    this.togglePlaybackStatus();
+
+    // turn off device
+    this._state = false;
+};
+
+Speaker.prototype.getName = function () {
+    return this._name;
+};
+
+Speaker.prototype.setName = function (name) {
+    this._name = name;
+};
+
+Speaker.prototype.getState = function () {
+    return this._state;
+};
+
+// check is device on
+Speaker.prototype._isDeviceOn = function () {
+    if (!this.getState()) throw new Error('Turn on device, please!');
+};
+///////////////////////////////////////
+
+// log info about current device state
+Speaker.prototype.info = function () {
+    console.log(`
             name: ${this._name},
             status: ${this.getState()},
             volume: ${this._currentVolume},
-            playing: ${this.this._playbackState},
+            playing: ${this._playbackState},
             currentSong: ${this._trackList[this._currentTrack].name},
             songDuration: ${this._trackList[this._currentTrack].duration},
             currentTime: ${this._currentTimerValue}
         `);
-    }
+};
 
-    this.getName = function () {
-        return this._name;
-    }
+// turn device to play/pause modes
+Speaker.prototype.togglePlaybackStatus = function () {
+    this._isDeviceOn();
 
-    this.setName = (name) => {
-        this._name = name;
-    }
+    // change playing status to oposite
+    this._playbackState = !this._playbackState;
 
-    // turn device to play/pause modes
-    this.togglePlaybackStatus = function () {
-        this.isDeviceOn();
-
-        // change playing status to oposite
-        this._playbackState = !this._playbackState;
-
-        if (this._playbackState) {
-            // start playing tracks
-            this._startPlaying(this._currentTimerValue);
-        } else {
-            // stop playing tracks
-            this._stopPlaying();
-        }
-    }
-
-    this._stopPlaying = function () {
-        this.isDeviceOn();
-
-        // delete async time counter
-        clearInterval(this._timer);
-    }
-
-
-    this._startPlaying = function (playSongFrom) {
-        this.isDeviceOn();
-        this.isDeviceInPlayingModeNow();
-
-        // set time-counter to predefined {playSongFrom} value or start from 0s 
-        var count = (typeof playSongFrom === 'number') ? playSongFrom : 0;
-
-        function tic() {
-            // if predefined value more than track duration play next song
-            if (count >= this._trackList[this._currentTrack].duration) {
-                this.nextTrack();
-            } else {
-                // increase time counter on 1s
-                count++;
-                // set value to property to achieve that from other methods
-                this._currentTimerValue = count;
-            }
-            // log info on each timer tic
-            this.info();
-        }
-
-        // set async time counter
-        this._timer = setInterval(tic.bind(this), 1000);
-    }
-
-
-    this.nextTrack = function () {
-        this.isDeviceOn();
-
-        // delete old timer
+    if (this._playbackState) {
+        // start playing tracks
+        this._startPlaying(this._currentTimerValue);
+    } else {
+        // stop playing tracks
         this._stopPlaying();
-        // set timer value to 0, for starting track from the beginning
-        this._currentTimerValue = 0;
-
-        // if there is some more track in track list start next 
-        if (this._currentTrack < this._trackList.length - 1) {
-            this._currentTrack++;
-        } else {
-            // if track is last in track list start from first track
-            this._currentTrack = 0;
-        }
-
-        // setup new timer
-        this._startPlaying();
     }
+};
 
-    this.previousTrack = function () {
-        this.isDeviceOn();
+Speaker.prototype._stopPlaying = function () {
+    this._isDeviceOn();
 
-        // delete old timer
-        this._stopPlaying();
-        // set timer value to 0, for starting track from the beginning
-        this._currentTimerValue = 0;
+    // delete async time counter
+    clearInterval(this._timer);
+};
 
-        // if there is some more track in track list start next 
-        if (this._currentTrack > 0) {
-            this._currentTrack--;
-        } else {
-            // if track is first in track list play last track
-            this._currentTrack = this._trackList.length - 1;
-        }
+Speaker.prototype._startPlaying = function (playSongFrom) {
+    this._isDeviceOn();
+    this._isDeviceInPlayingModeNow();
 
-        // setup new timer
-        this._startPlaying();
-    }
+    // set time-counter to predefined {playSongFrom} value or start from 0s 
+    let count = (typeof playSongFrom === 'number') ? playSongFrom : 0;
 
-    this.rewindForward = function () {
-        this.isDeviceOn();
-        //rewind only if device playing now
-        this.isDeviceInPlayingModeNow();
-
-        // setup random rewind time
-        var rewindTime = Math.random().toFixed(1) * 10;
-
-        // if lost time + rewind time less than song duration, start playing from new time position
-        if (this._currentTimerValue + rewindTime < this._trackList[this._currentTrack].duration) {
-            this._stopPlaying();
-            this._startPlaying(this._currentTimerValue + rewindTime);
-
-        } else {
-            // if lost time + rewind time more than song duration, start playing next song
+    let tic = function () {
+        // if predefined value more than track duration play next song
+        if (count >= this._trackList[this._currentTrack].duration) {
             this.nextTrack();
-        }
-    }
-
-
-
-    this.rewindBack = function () {
-        this.isDeviceOn();
-        //rewind only if device playing now
-        this.isDeviceInPlayingModeNow();
-
-        // setup random rewind time
-        var rewindTime = Math.random().toFixed(1) * 10;
-        this._stopPlaying();
-
-
-        // if lost time - rewind time more than 0, start playing from new time position
-        if (this._currentTimerValue - rewindTime > 0) {
-            this._startPlaying(this._currentTimerValue - rewindTime);
-
         } else {
-            // if lost time - rewind time less than 0, start playing previouse song
-            this.previousTrack();
+            // increase time counter on 1s
+            count++;
+            // set value to property to achieve that from other methods
+            this._currentTimerValue = count;
         }
+        // log info on each timer tic
+        this.info();
+    };
+
+    // set async time counter
+    this._timer = setInterval(tic.bind(this), 1000);
+};
+
+Speaker.prototype.getPlayPauseState = function () {
+    return this._playbackState;
+};
+
+Speaker.prototype.nextTrack = function () {
+    this._isDeviceOn();
+
+    // delete old timer
+    this._stopPlaying();
+    // set timer value to 0, for starting track from the beginning
+    this._currentTimerValue = 0;
+
+    // if there is some more track in track list start next 
+    if (this._currentTrack < this._trackList.length - 1) {
+        this._currentTrack++;
+    } else {
+        // if track is last in track list start from first track
+        this._currentTrack = 0;
     }
 
-    this.increaseVolume = function () {
-        this.isDeviceOn();
+    // setup new timer
+    this._startPlaying();
+};
 
-        // checks that the value does not go beyond the predefined limits
-        if (this._currentVolume < this._volumeMax) {
-            this._currentVolume++;
-        }
+Speaker.prototype.previousTrack = function () {
+    this._isDeviceOn();
+
+    // delete old timer
+    this._stopPlaying();
+    // set timer value to 0, for starting track from the beginning
+    this._currentTimerValue = 0;
+
+    // if there is some more track in track list start next 
+    if (this._currentTrack > 0) {
+        this._currentTrack--;
+    } else {
+        // if track is first in track list play last track
+        this._currentTrack = this._trackList.length - 1;
     }
 
-    this.decreaseVolume = function () {
-        this.isDeviceOn();
+    // setup new timer
+    this._startPlaying();
+};
 
-        // checks that the value does not go beyond the predefined limits
-        if (this._currentVolume > this._volumeMin) {
-            this._currentVolume--;
-        }
+Speaker.prototype.rewindForward = function () {
+    this._isDeviceOn();
+    //rewind only if device playing now
+    this._isDeviceInPlayingModeNow();
+
+    // setup random rewind time
+    const rewindTime = Math.random().toFixed(1) * 10;
+
+    // if lost time + rewind time less than song duration, start playing from new time position
+    if (this._currentTimerValue + rewindTime < this._trackList[this._currentTrack].duration) {
+        this._stopPlaying();
+        this._startPlaying(this._currentTimerValue + rewindTime);
+
+    } else {
+        // if lost time + rewind time more than song duration, start playing next song
+        this.nextTrack();
     }
+};
 
-    //safety methods
+Speaker.prototype.rewindBack = function () {
+    this._isDeviceOn();
+    //rewind only if device playing now
+    this._isDeviceInPlayingModeNow();
 
-    this.getState = function () {
-        return this._state;
+    // setup random rewind time
+    const rewindTime = Math.random().toFixed(1) * 10;
+    this._stopPlaying();
+
+
+    // if lost time - rewind time more than 0, start playing from new time position
+    if (this._currentTimerValue - rewindTime > 0) {
+        this._startPlaying(this._currentTimerValue - rewindTime);
+
+    } else {
+        // if lost time - rewind time less than 0, start playing previouse song
+        this.previousTrack();
     }
+};
 
-    // check is device on
-    this.isDeviceOn = function () {
-        if (!this.getState()) throw new Error('Turn on device, please!');
+Speaker.prototype.increaseVolume = function () {
+    this._isDeviceOn();
+
+    // checks that the value does not go beyond the predefined limits
+    if (this._currentVolume < this._volumeMax) {
+        this._currentVolume++;
     }
+};
 
-    //check is device playing track now
-    this.isDeviceInPlayingModeNow = function () {
-        if (!this._playbackState) throw new Error('Toggle device to playing mode before starting this operation');
+Speaker.prototype.decreaseVolume = function () {
+    this._isDeviceOn();
+
+    // checks that the value does not go beyond the predefined limits
+    if (this._currentVolume > this._volumeMin) {
+        this._currentVolume--;
     }
+};
 
-}
+//safety methods
 
-var speaker = new Speaker(null, [{
-        name: 'Song 1',
-        duration: 8
-    },
-    {
-        name: 'Song 2',
-        duration: 12
-    }
-]);
+
+
+//check is device playing track now
+Speaker.prototype._isDeviceInPlayingModeNow = function () {
+    if (!this._playbackState) throw new Error('Toggle device to playing mode before starting this operation');
+};
+
+//safety methods end
+
+//initialize object
+
+let speaker = new Speaker(null, 123);
+
+speaker.on();
