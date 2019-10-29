@@ -1,4 +1,4 @@
-let Machine = function (name) {
+let Machine = function(name) {
   if (this._checkNameValidity(name)) {
     this._name = name;
   } else {
@@ -7,34 +7,34 @@ let Machine = function (name) {
   }
   this._state = false;
 };
-Machine.prototype.info = function () {
+Machine.prototype.info = function() {
   return `
         name: ${this._name};
-        state: ${this._state};`);
+        state: ${this._state};`;
 };
 
-Machine.prototype.getState = function () {
+Machine.prototype.getState = function() {
   return this._state;
 };
 
-Machine.prototype.getName = function () {
+Machine.prototype.getName = function() {
   return this._name;
 };
 
-Machine.prototype.setName = function (name) {
+Machine.prototype.setName = function(name) {
   if (this._checkNameValidity(name)) {
     this._name = name;
   }
 };
 
-Machine.prototype._isDeviceOn = function () {
+Machine.prototype._isDeviceOn = function() {
   if (!this.getState()) {
     throw new Error("Turn on device, please!");
   }
   return true;
 };
 
-Machine.prototype._checkNameValidity = function (name) {
+Machine.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
     throw new Error("Name must be a string");
   }
@@ -47,19 +47,19 @@ Machine.prototype._checkNameValidity = function (name) {
   }
 };
 
-Machine.prototype.on = function () {
+Machine.prototype.on = function() {
   this._state = true;
 };
 
-Machine.prototype.off = function () {
+Machine.prototype.off = function() {
   this._state = false;
 };
 
-Machine.prototype._deleteTimer = function () {
+Machine.prototype._deleteTimer = function() {
   clearInterval(this._timer);
 };
 
-const SmartKettle = function (name = "kettle22") {
+const SmartKettle = function(name = "kettle22") {
   Machine.call(this, name);
   this.__modes = {
     standart: 100,
@@ -78,7 +78,7 @@ const SmartKettle = function (name = "kettle22") {
 SmartKettle.prototype = Object.create(Machine.prototype);
 SmartKettle.prototype.constructor = SmartKettle;
 
-SmartKettle.prototype.info = function () {
+SmartKettle.prototype.info = function() {
   console.log(`
         ${Machine.prototype.info.call(this)}
         mode: ${this.__currentMode};
@@ -86,7 +86,7 @@ SmartKettle.prototype.info = function () {
     `);
 };
 
-SmartKettle.prototype.setTemperature = function (value) {
+SmartKettle.prototype.setTemperature = function(value) {
   if (typeof value == "number" && value >= 10 && value <= 70) {
     this.__currentTemperature = value;
   } else {
@@ -94,17 +94,17 @@ SmartKettle.prototype.setTemperature = function (value) {
   }
 };
 
-SmartKettle.prototype.changeMode = function (value) {
+SmartKettle.prototype.changeMode = function(value) {
   if (this._isDeviceOn() && typeof value == "string" && value in this.__modes) {
     this.__currentMode = value;
   }
 };
 
-SmartKettle.prototype.getCurrentMode = function () {
+SmartKettle.prototype.getCurrentMode = function() {
   return this.__currentMode;
 };
 
-SmartKettle.prototype.addWater = function (value) {
+SmartKettle.prototype.addWater = function(value) {
   let newAmountOfWater = this.__currentFullness + value;
   if (typeof value !== "number") {
     throw new Error("Input valid value");
@@ -121,11 +121,11 @@ SmartKettle.prototype.addWater = function (value) {
   }
 };
 
-SmartKettle.prototype.getCurrentFullness = function () {
+SmartKettle.prototype.getCurrentFullness = function() {
   return this.__currentFullness;
 };
 
-SmartKettle.prototype.boilWater = function (temperature) {
+SmartKettle.prototype.boilWater = function(temperature) {
   if (this._isDeviceOn() && this.__currentFullness) {
     this.setTemperature(temperature);
     this._timer = setInterval(() => {
