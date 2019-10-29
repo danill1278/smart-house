@@ -41,7 +41,6 @@ Machine.prototype._checkNameValidity = function(name) {
   const regex = /^\w{5,10}/i;
   const result = name.match(regex);
   if (result) {
-    this._name = result[0];
     return true;
   } else {
     throw new Error("Name must contain 5-10 characters");
