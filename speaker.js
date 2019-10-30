@@ -219,13 +219,6 @@ Speaker.prototype.getPlayPauseState = function() {
 };
 
 Speaker.prototype.nextTrack = function() {
-  this._isDeviceOn();
-
-  // delete old timer
-  this._stopPlaying();
-  // set timer value to 0, for starting track from the beginning
-  this._currentTimerValue = 0;
-
   // if there is some more track in track list start next
   if (this._currentTrack < this._trackList.length - 1) {
     this._currentTrack++;
@@ -233,25 +226,35 @@ Speaker.prototype.nextTrack = function() {
     // if track is last in track list start from first track
     this._currentTrack = 0;
   }
-
-  // setup new timer
-  this._startPlaying();
 };
 
 Speaker.prototype.previousTrack = function() {
-  this._isDeviceOn();
-
-  // delete old timer
-  this._stopPlaying();
-  // set timer value to 0, for starting track from the beginning
-  this._currentTimerValue = 0;
-
   // if there is some more track in track list start next
   if (this._currentTrack > 0) {
     this._currentTrack--;
   } else {
     // if track is first in track list play last track
     this._currentTrack = this._trackList.length - 1;
+  }
+};
+
+Speaker.prototype.switchTrack = function(switchDirection) {
+  this._isDeviceOn();
+  if (typeof switchDirection !== "string") {
+  }
+
+  // delete old timer
+  this._stopPlaying();
+  // set timer value to 0, for starting track from the beginning
+  this._currentTimerValue = 0;
+
+  switch (switchDirection) {
+    case "next":
+      this.nextTrack();
+      break;
+    case "previous":
+      this.previousTrack();
+      break;
   }
 
   // setup new timer
