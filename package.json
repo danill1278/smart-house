@@ -2,7 +2,14 @@
   "name": "smart-house",
   "version": "1.0.0",
   "description": "Smart House using prototype OOP",
-  "main": "main.js",
+  "main": "speaker.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint **/*.js",
@@ -17,11 +24,5 @@
   "bugs": {
     "url": "https://github.com/danill1278/smart-house/issues"
   },
-  "homepage": "https://github.com/danill1278/smart-house#readme",
-  "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.5.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "^1.18.2"
-  }
+  "homepage": "https://github.com/danill1278/smart-house#readme"
 }
