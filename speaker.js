@@ -85,16 +85,13 @@ function Speaker(trackList, name = "Jeka Active") {
     trackList.forEach(track => {
       if (
         !(
-          "name" in track &&
           typeof track.name === "string" &&
-          track.name &&
-          "duration" in track &&
+          track.name.length &&
           typeof track.duration === "number" &&
           track.duration > 0
         )
       ) {
-        throw new Error(`
-        Invalid input tracklist data `);
+        throw new Error("Invalid input tracklist data");
       }
 
       this._trackList = trackList;
@@ -199,7 +196,7 @@ Speaker.prototype._startPlaying = function(playSongFrom) {
   let tic = function() {
     // if predefined value more than track duration play next song
     if (count >= this._trackList[this._currentTrack].duration) {
-      this.nextTrack();
+      this.toggleTrack("next");
     } else {
       // increase time counter on 1s
       count++;
@@ -219,13 +216,6 @@ Speaker.prototype.getPlayPauseState = function() {
 };
 
 Speaker.prototype.nextTrack = function() {
-  this._isDeviceOn();
-
-  // delete old timer
-  this._stopPlaying();
-  // set timer value to 0, for starting track from the beginning
-  this._currentTimerValue = 0;
-
   // if there is some more track in track list start next
   if (this._currentTrack < this._trackList.length - 1) {
     this._currentTrack++;
@@ -233,19 +223,9 @@ Speaker.prototype.nextTrack = function() {
     // if track is last in track list start from first track
     this._currentTrack = 0;
   }
-
-  // setup new timer
-  this._startPlaying();
 };
 
 Speaker.prototype.previousTrack = function() {
-  this._isDeviceOn();
-
-  // delete old timer
-  this._stopPlaying();
-  // set timer value to 0, for starting track from the beginning
-  this._currentTimerValue = 0;
-
   // if there is some more track in track list start next
   if (this._currentTrack > 0) {
     this._currentTrack--;
@@ -253,47 +233,81 @@ Speaker.prototype.previousTrack = function() {
     // if track is first in track list play last track
     this._currentTrack = this._trackList.length - 1;
   }
+};
+
+Speaker.prototype.toggleTrack = function(toggleDirection) {
+  this._isDeviceOn();
+  if (typeof toggleDirection !== "string") {
+    throw new Error("Please pass 'next' or 'previous' value as a parameter");
+  }
+
+  // delete old timer
+  this._stopPlaying();
+  // set timer value to 0, for starting track from the beginning
+  this._currentTimerValue = 0;
+
+  switch (toggleDirection) {
+    case "next":
+      this.nextTrack();
+      break;
+    case "previous":
+      this.previousTrack();
+      break;
+  }
 
   // setup new timer
   this._startPlaying();
 };
 
-Speaker.prototype.rewindForward = function() {
+Speaker.prototype.rewindTrack = function(rewindDirection) {
   this._isDeviceOn();
   //rewind only if device playing now
   this._isDeviceInPlayingModeNow();
 
+  if (
+    typeof rewindDirection !== "string" ||
+    (rewindDirection !== "forward" && rewindDirection !== "back")
+  ) {
+    throw new Error(
+      "Please pass 'forward' or 'back' string value as a parameter"
+    );
+  }
+
   // setup random rewind time
   const rewindTime = Math.random().toFixed(1) * 10;
-
-  // if lost time + rewind time less than song duration, start playing from new time position
-  if (
-    this._currentTimerValue + rewindTime <
-    this._trackList[this._currentTrack].duration
-  ) {
-    this._stopPlaying();
-    this._startPlaying(this._currentTimerValue + rewindTime);
-  } else {
-    // if lost time + rewind time more than song duration, start playing next song
-    this.nextTrack();
+  switch (rewindDirection) {
+    case "forward":
+      this.rewindForward(rewindTime);
+      break;
+    case "back":
+      this.rewindBack(rewindTime);
+      break;
   }
 };
 
-Speaker.prototype.rewindBack = function() {
-  this._isDeviceOn();
-  //rewind only if device playing now
-  this._isDeviceInPlayingModeNow();
+Speaker.prototype.rewindForward = function(time) {
+  // if lost time + rewind time less than song duration, start playing from new time position
+  if (
+    this._currentTimerValue + time <
+    this._trackList[this._currentTrack].duration
+  ) {
+    this._stopPlaying();
+    this._startPlaying(this._currentTimerValue + time);
+  } else {
+    // if lost time + rewind time more than song duration, start playing next song
+    this.toggleTrack("next");
+  }
+};
 
-  // setup random rewind time
-  const rewindTime = Math.random().toFixed(1) * 10;
+Speaker.prototype.rewindBack = function(time) {
   this._stopPlaying();
 
   // if lost time - rewind time more than 0, start playing from new time position
-  if (this._currentTimerValue - rewindTime > 0) {
-    this._startPlaying(this._currentTimerValue - rewindTime);
+  if (this._currentTimerValue - time > 0) {
+    this._startPlaying(this._currentTimerValue - time);
   } else {
-    // if lost time - rewind time less than 0, start playing previouse song
-    this.previousTrack();
+    // if lost time - rewind time less than 0, start playing previous song
+    this.toggleTrack("previous");
   }
 };
 
@@ -329,5 +343,15 @@ Speaker.prototype._isDeviceInPlayingModeNow = function() {
 
 //initialize object
 
-let speaker = new Speaker();
+let speaker = new Speaker([
+  {
+    name: "2",
+    duration: 1
+  },
+  {
+    name: "Song 2",
+    duration: 10
+  }
+]);
+
 speaker.on();
