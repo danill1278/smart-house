@@ -8,9 +8,9 @@ let Machine = function(name) {
   this._state = false;
 };
 Machine.prototype.info = function() {
-  console.log(`
+  return `
         name: ${this._name};
-        state: ${this._state};`);
+        state: ${this._state};`;
 };
 
 Machine.prototype.getState = function() {
@@ -38,10 +38,9 @@ Machine.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
     throw new Error("Name must be a string");
   }
-  const regex = /^\w{5,10}/i;
+  const regex = /^[A-z0-9\s]{5,10}/i;
   const result = name.match(regex);
   if (result) {
-    this._name = result[0];
     return true;
   } else {
     throw new Error("Name must contain 5-10 characters");
@@ -80,8 +79,8 @@ SmartKettle.prototype = Object.create(Machine.prototype);
 SmartKettle.prototype.constructor = SmartKettle;
 
 SmartKettle.prototype.info = function() {
-  Machine.prototype.info.call(this);
   console.log(`
+        ${Machine.prototype.info.call(this)}
         mode: ${this.__currentMode};
         currentFullness: ${this.__currentFullness};
     `);

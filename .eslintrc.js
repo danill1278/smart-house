@@ -1,18 +1,13 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es6': true,
-  },
-  'extends': [
-    'google',
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
   ],
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly',
+  "env": {
+    "es6": true,
+    "node": true
   },
-  'parserOptions': {
-    'ecmaVersion': 2018,
-  },
-  'rules': {
-  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  }
 };
