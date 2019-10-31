@@ -32,12 +32,12 @@ Machine.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
     throw new Error("Name must be a string");
   }
-  const regex = /^[A-z0-9\s]{5,10}/;
+  const regex = /^[\w\d\s]{5,10}$/;
   const result = name.match(regex);
-  if (result) {
-    return true;
-  } else {
+  if (!result) {
     throw new Error("Name must contain 5-10 characters");
+  } else {
+    return true;
   }
 };
 
@@ -73,8 +73,9 @@ function Speaker(trackList, name = "Jeka Active") {
   //is flash card in device
   this._flashCard = true;
 
-  //track duration timer count  
+  //track duration timer count
   this._currentTimerValue = 0;
+  
 
   const defaultTrackList = [
     {
