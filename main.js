@@ -1,9 +1,6 @@
-let Machine = function(name) {
+const Machine = function(name = "default") {
   if (this._checkNameValidity(name)) {
     this._name = name;
-  } else {
-    //default name
-    this._name = "default";
   }
   this._state = false;
 };
@@ -134,8 +131,10 @@ SmartKettle.prototype.boilWater = function(temperature) {
         this._deleteTimer();
       } else {
         this.__currentTemperature++;
-        this.__currentFullness -= 2;
+        this.__currentFullness--;
       }
     }, 1000);
   }
 };
+
+let myKettle = new SmartKettle("asdfg6794");
