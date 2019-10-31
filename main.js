@@ -3,7 +3,9 @@ const Machine = function(name = "default") {
     this._name = name;
   }
   this._state = false;
+  this._timer = null;
 };
+
 Machine.prototype.info = function() {
   return `
         name: ${this._name};
@@ -35,7 +37,7 @@ Machine.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
     throw new Error("Name must be a string");
   }
-  const regex = /^[A-z0-9\s]{5,10}/i;
+  const regex = /\w\d\s/;
   const result = name.match(regex);
   if (result) {
     return true;

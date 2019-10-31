@@ -14,15 +14,13 @@ Class SmartKettle {
 		#set name (String): void
 		#on(): void
 		#off(): void
-                #get state(): Boolean
+        #get state(): Boolean
 		#isDeviceOn():Boolean
 		#info(): void
-                +boilWater(): void 
+        +boilWater(): void
 		+changeMode(String): void
 		+get currentMode(): String
-		+set Temperature(Number): void
-		+get currentTemperature(): Number
+		+set temperature(): void
 		+addWater(number): void
 		+get currentFullness(): Number
-		
-		
+
