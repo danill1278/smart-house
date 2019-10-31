@@ -1,12 +1,10 @@
-function Machine(name) {
+function Machine(name = "default") {
   if (this._checkNameValidity(name)) {
     this._name = name;
-  } else {
-    //default name
-    this._name = "default";
   }
   // device on/off
   this._state = false;
+  this._timer = null;
 }
 
 Machine.prototype.getState = function() {

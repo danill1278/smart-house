@@ -1,12 +1,10 @@
-function Machine(name) {
+function Machine(name = "default") {
   if (this._checkNameValidity(name)) {
     this._name = name;
-  } else {
-    //default name
-    this._name = "default";
   }
   // device on/off
   this._state = false;
+  this._timer = null;
 }
 
 Machine.prototype.getState = function() {
@@ -75,9 +73,31 @@ function Speaker(trackList, name = "Jeka Active") {
   //is flash card in device
   this._flashCard = true;
 
-  //track duration timer count
-  this._timer = null;
+  //track duration timer count  
   this._currentTimerValue = 0;
+
+  const defaultTrackList = [
+    {
+      name: "Song 1",
+      duration: 8
+    },
+    {
+      name: "Song 2",
+      duration: 10
+    },
+    {
+      name: "Song 3",
+      duration: 5
+    },
+    {
+      name: "Song 4",
+      duration: 13
+    },
+    {
+      name: "Song 5",
+      duration: 10
+    }
+  ];
 
   // initializing of track-list
   if (Array.isArray(trackList) && trackList.length) {
@@ -98,28 +118,7 @@ function Speaker(trackList, name = "Jeka Active") {
     });
   } else {
     //default tracklist
-    this._trackList = [
-      {
-        name: "Song 1",
-        duration: 8
-      },
-      {
-        name: "Song 2",
-        duration: 10
-      },
-      {
-        name: "Song 3",
-        duration: 5
-      },
-      {
-        name: "Song 4",
-        duration: 13
-      },
-      {
-        name: "Song 5",
-        duration: 10
-      }
-    ];
+    this._trackList = defaultTrackList;
   }
 
   // track wich playing now

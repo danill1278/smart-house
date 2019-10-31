@@ -11,8 +11,7 @@ class Speaker {
         //is flash card in device
         #flashCard: Boolean true,
 
-        //track duration timer count
-        #timer: Number null,
+        //track duration timer count        
         #currentTimerValue: Number null,
 
         // track-list

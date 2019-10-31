@@ -3,6 +3,7 @@ class Machine {
     
         #name: String,
         #state: Boolean false
+        #timer: Number null,
 
     methods:
 
