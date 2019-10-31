@@ -1,4 +1,4 @@
-let Machine = function(name) {
+const Machine = function(name) {
   if (this._checkNameValidity(name)) {
     this._name = name;
   } else {
