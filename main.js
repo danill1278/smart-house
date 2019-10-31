@@ -37,12 +37,12 @@ Machine.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
     throw new Error("Name must be a string");
   }
-  const regex = /\w\d\s/;
+  const regex = /^[\w\d\s]{5,10}$/;
   const result = name.match(regex);
-  if (result) {
-    return true;
-  } else {
+  if (!result) {
     throw new Error("Name must contain 5-10 characters");
+  } else {
+    return true;
   }
 };
 
@@ -139,4 +139,5 @@ SmartKettle.prototype.boilWater = function(temperature) {
   }
 };
 
-let myKettle = new SmartKettle("asdfg6794");
+let myKettle = new SmartKettle("adkdlf alakajslksj");
+
