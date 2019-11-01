@@ -1,24 +1,23 @@
-function Machine(name = "default") {
-  if (this._checkNameValidity(name)) {
-    this._name = name;
-  }
-  // device on/off
+function Machine(model = "machine") {
+  this._model = model;
   this._state = false;
+
+  // creating device id
+
+  const id = Symbol();
   this._timer = null;
+
+  this.getId = function() {
+    return id;
+  };
 }
 
 Machine.prototype.getState = function() {
   return this._state;
 };
 
-Machine.prototype.getName = function() {
-  return this._name;
-};
-
-Machine.prototype.setName = function(name) {
-  if (this._checkNameValidity(name)) {
-    this._name = name;
-  }
+Machine.prototype.getModel = function() {
+  return this._model;
 };
 
 Machine.prototype._isDeviceOn = function() {
@@ -28,18 +27,19 @@ Machine.prototype._isDeviceOn = function() {
   return true;
 };
 
-Machine.prototype._checkNameValidity = function(name) {
-  if (typeof name !== "string") {
-    throw new Error("Name must be a string");
-  }
-  const regex = /^[\w\d\s]{5,10}$/;
-  const result = name.match(regex);
-  if (!result) {
-    throw new Error("Name must contain 5-10 characters");
-  } else {
-    return true;
-  }
-};
+// Machine.prototype._checkNameValidity = function(name) {
+//   if (typeof name !== "string") {
+//     throw new Error("Name must be a string");
+//   }
+//   const regex = /^[\w\d\s]{5,10}$/;
+//   const result = name.match(regex);
+//   if (!result) {
+//     throw new Error("Name must contain 5-10 characters");
+//   } else {
+//     return true;
+//   }
+// };
+
 Machine.prototype.on = function() {
   this._state = true;
 };
@@ -54,6 +54,6 @@ Machine.prototype._deleteTimer = function() {
 
 Machine.prototype.info = function() {
   return `
-        name: ${this.getName()},
+        model: ${this.getModel()},
         status: ${this.getState()}`;
 };

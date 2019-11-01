@@ -140,4 +140,3 @@ SmartKettle.prototype.boilWater = function(temperature) {
 };
 
 let myKettle = new SmartKettle("adkdlf alakajslksj");
-
