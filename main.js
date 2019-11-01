@@ -1,3 +1,11 @@
+const logger = {
+  warning: function(text) {
+    console.warn(text);
+  },
+  error: function(text) {
+    console.error(text);
+  }
+};
 const Machine = function(name = "default") {
   if (this._checkNameValidity(name)) {
     this._name = name;
@@ -28,19 +36,19 @@ Machine.prototype.setName = function(name) {
 
 Machine.prototype._isDeviceOn = function() {
   if (!this.getState()) {
-    throw new Error("Turn on device, please!");
+    logger.error("Turn on device, please!");
   }
   return true;
 };
 
 Machine.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
-    throw new Error("Name must be a string");
+    logger.error("Name must be a string");
   }
   const regex = /^[\w\d\s]{5,10}$/;
-  const result = name.match(regex);
+  const result = name.test(regex);
   if (!result) {
-    throw new Error("Name must contain 5-10 characters");
+    logger.warning("Name must contain 5-10 characters");
   } else {
     return true;
   }
@@ -89,7 +97,7 @@ SmartKettle.prototype.setTemperature = function(value) {
   if (typeof value == "number" && value >= 10 && value <= 70) {
     this.__currentTemperature = value;
   } else {
-    throw new Error("Temperature must be in range from 10 to 70C");
+    logger.warning("Temperature must be in range from 10 to 70C");
   }
 };
 
@@ -106,7 +114,7 @@ SmartKettle.prototype.getCurrentMode = function() {
 SmartKettle.prototype.addWater = function(value) {
   let newAmountOfWater = this.__currentFullness + value;
   if (typeof value !== "number") {
-    throw new Error("Input valid value");
+    logger.error("Value must be a number");
   }
   if (
     newAmountOfWater >= this.__minFullness &&
@@ -114,9 +122,9 @@ SmartKettle.prototype.addWater = function(value) {
   ) {
     this.__currentFullness = newAmountOfWater;
   } else if (newAmountOfWater < this.__minFullness) {
-    throw new Error("Please, add more water");
+    logger.warning("Please, add more water");
   } else {
-    throw new Error("Please, reduce the amount of water");
+    logger.warning("Please, reduce the amount of water");
   }
 };
 
@@ -140,4 +148,3 @@ SmartKettle.prototype.boilWater = function(temperature) {
 };
 
 let myKettle = new SmartKettle("adkdlf alakajslksj");
-
