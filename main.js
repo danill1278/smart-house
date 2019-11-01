@@ -6,53 +6,47 @@ const logger = {
     console.error(text);
   }
 };
-const Machine = function(name = "default") {
-  if (this._checkNameValidity(name)) {
-    this._name = name;
-  }
+const Machine = function(model = "machine") {
+  this._model = model;
   this._state = false;
-  this._timer = null;
-};
 
-Machine.prototype.info = function() {
-  return `
-        name: ${this._name};
-        state: ${this._state};`;
+  // creating device id
+
+  const id = Symbol();
+  this._timer = null;
+
+  this.getId = function() {
+    return id;
+  };
 };
 
 Machine.prototype.getState = function() {
   return this._state;
 };
 
-Machine.prototype.getName = function() {
-  return this._name;
-};
-
-Machine.prototype.setName = function(name) {
-  if (this._checkNameValidity(name)) {
-    this._name = name;
-  }
+Machine.prototype.getModel = function() {
+  return this._model;
 };
 
 Machine.prototype._isDeviceOn = function() {
   if (!this.getState()) {
-    logger.error("Turn on device, please!");
+    throw new Error("Turn on device, please!");
   }
   return true;
 };
 
-Machine.prototype._checkNameValidity = function(name) {
-  if (typeof name !== "string") {
-    logger.error("Name must be a string");
-  }
-  const regex = /^[\w\d\s]{5,10}$/;
-  const result = name.test(regex);
-  if (!result) {
-    logger.warning("Name must contain 5-10 characters");
-  } else {
-    return true;
-  }
-};
+// Machine.prototype._checkNameValidity = function(name) {
+//   if (typeof name !== "string") {
+//     throw new Error("Name must be a string");
+//   }
+//   const regex = /^[\w\d\s]{5,10}$/;
+//   const result = name.match(regex);
+//   if (!result) {
+//     throw new Error("Name must contain 5-10 characters");
+//   } else {
+//     return true;
+//   }
+// };
 
 Machine.prototype.on = function() {
   this._state = true;
@@ -66,8 +60,14 @@ Machine.prototype._deleteTimer = function() {
   clearInterval(this._timer);
 };
 
-const SmartKettle = function(name = "kettle22") {
-  Machine.call(this, name);
+Machine.prototype.info = function() {
+  return `
+        model: ${this.getModel()},
+        status: ${this.getState()}`;
+};
+
+const SmartKettle = function() {
+  Machine.call(this, "kettle22");
   this.__modes = {
     standart: 100,
     tea: 78,
@@ -135,16 +135,77 @@ SmartKettle.prototype.getCurrentFullness = function() {
 SmartKettle.prototype.boilWater = function(temperature) {
   if (this._isDeviceOn() && this.__currentFullness) {
     this.setTemperature(temperature);
-    this._timer = setInterval(() => {
-      if (this.__currentTemperature === this.__modes[this.__currentMode]) {
-        this.off();
-        this._deleteTimer();
-      } else {
-        this.__currentTemperature++;
-        this.__currentFullness--;
-      }
-    }, 1000);
+    return new Promise(resolve => {
+      this._timer = setInterval(() => {
+        if (this.__currentTemperature === this.__modes[this.__currentMode]) {
+          resolve();
+          this.off();
+          this._deleteTimer();
+        } else {
+          this.__currentTemperature++;
+          this.__currentFullness--;
+        }
+      }, 1000);
+    }).then(() => {
+      console.log(this.__currentTemperature);
+    });
   }
 };
+const SmartHouse = function(name = "New House") {
+  this.__devices = [];
+  this.__checkName = function(name) {
+    if (typeof name !== "string") {
+      logger.error("Name must be a string");
+    }
+    const regex = /^[\w\d\s]{5,10}/;
+    const result = name.match(regex);
+    if (!result) {
+      logger.warning("Name must contain 5-10 characters");
+    } else {
+      return true;
+    }
+  };
+  if (this.__checkName(name)) {
+    this.__name = name;
+  }
 
-let myKettle = new SmartKettle("adkdlf alakajslksj");
+  this.getName = function() {
+    return this.__name;
+  };
+  this.addDevice = function(value) {
+    if (value instanceof SmartKettle || value instanceof Speaker) {
+      this.__devices.push(value);
+    } else {
+      logger.error("Devices must be objects of SmartKettle or Speaker");
+    }
+  };
+  this.onAll = function() {
+    this.__devices.forEach(device => device.on());
+  };
+  this.offAll = function() {
+    this.__devices.forEach(device => device.off());
+  };
+  this.getAllDevices = function() {
+    return this.__devices;
+  };
+  this.deleteAllDevices = function() {
+    this.__devices = [];
+  };
+  this.deleteDeviceById = function(id) {
+    let deleteObjIndex = this.__devices.find((device, index) => {
+      if (device.getId() === id) {
+        return index;
+      }
+    });
+    this.__devices.splice(deleteObjIndex, 1);
+  };
+  this.getDeviceById = function(id) {
+    return this.__devices.find(device => {
+      if (device.getId() === id) {
+        return device;
+      }
+    });
+  };
+};
+
+
