@@ -7,7 +7,7 @@ const SmartHouse = function(name = "New House") {
     if (typeof name !== "string") {
       logger.error("Name must be a string");
     }
-    const regex = /^[\w\d\s]{5,10}$/;
+    const regex = /^[\w\d\s]{5,10}/;
     const result = name.match(regex);
     if (!result) {
       logger.warning("Name must contain 5-10 characters");
