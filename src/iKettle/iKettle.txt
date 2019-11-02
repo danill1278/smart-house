@@ -1,4 +1,4 @@
-Class SmartKettle {
+Class iKettle {
 	Properties:
 		#name: String 
 		#state: Boolean = false

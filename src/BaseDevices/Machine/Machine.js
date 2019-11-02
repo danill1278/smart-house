@@ -1,4 +1,4 @@
-function Machine(model = "machine") {
+const Machine =  function(model = "machine") {
   this._model = model;
   this._state = false;
 
@@ -57,3 +57,5 @@ Machine.prototype.info = function() {
         model: ${this.getModel()},
         status: ${this.getState()}`;
 };
+
+export default Machine;
