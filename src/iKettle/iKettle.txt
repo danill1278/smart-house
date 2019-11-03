@@ -8,7 +8,7 @@ Class iKettle {
 		-maxFullness: Number
 		-currentFullness: Number = 0
 		-minFullness: Number
-	Methods:
+	Methods:  
 		#constructor(name)
 		#get name(): String 
 		#set name (String): void

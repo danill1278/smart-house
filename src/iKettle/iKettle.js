@@ -7,18 +7,18 @@ import Logger from '../Utilities/Logger/Logger';
 const iKettle = function() {
   Machine.call(this, "kettle22");
   
-  this.__modes = {
+  this._modes = {
     standart: 100,
     tea: 78,
     coffee: 85,
     porridge: 72,
     "baby food": 70
   };
-  this.__currentMode = "standart";
-  this.__maxFullness = 1000;
-  this.__minFullness = 100;
-  this.__currentFullness = 0;
-  this.__currentTemperature = 0;
+  this._currentMode = "standart";
+  this._maxFullness = 1000;
+  this._minFullness = 100;
+  this._currentFullness = 0;
+  this._currentTemperature = 0;
 };
 
 iKettle.prototype = Object.create(Machine.prototype);
@@ -27,40 +27,40 @@ iKettle.prototype.constructor = iKettle;
 iKettle.prototype.info = function() {
   console.log(`
         ${Machine.prototype.info.call(this)}
-        mode: ${this.__currentMode};
-        currentFullness: ${this.__currentFullness};
+        mode: ${this._currentMode};
+        currentFullness: ${this._currentFullness};
     `);
 };
 
 iKettle.prototype.setTemperature = function(value) {
   if (typeof value == "number" && value >= 10 && value <= 70) {
-    this.__currentTemperature = value;
+    this._currentTemperature = value;
   } else {
     Logger.warning("Temperature must be in range from 10 to 70C");
   }
 };
 
 iKettle.prototype.changeMode = function(value) {
-  if (this._isDeviceOn() && typeof value == "string" && value in this.__modes) {
-    this.__currentMode = value;
+  if (this._isDeviceOn() && typeof value == "string" && value in this._modes) {
+    this._currentMode = value;
   }
 };
 
 iKettle.prototype.getCurrentMode = function() {
-  return this.__currentMode;
+  return this._currentMode;
 };
 
 iKettle.prototype.addWater = function(value) {
-  let newAmountOfWater = this.__currentFullness + value;
+  let newAmountOfWater = this._currentFullness + value;
   if (typeof value !== "number") {
     Logger.error("Value must be a number");
   }
   if (
-    newAmountOfWater >= this.__minFullness &&
-    newAmountOfWater <= this.__maxFullness
+    newAmountOfWater >= this._minFullness &&
+    newAmountOfWater <= this._maxFullness
   ) {
-    this.__currentFullness = newAmountOfWater;
-  } else if (newAmountOfWater < this.__minFullness) {
+    this._currentFullness = newAmountOfWater;
+  } else if (newAmountOfWater < this._minFullness) {
     Logger.warning("Please, add more water");
   } else {
     Logger.warning("Please, reduce the amount of water");
@@ -68,25 +68,25 @@ iKettle.prototype.addWater = function(value) {
 };
 
 iKettle.prototype.getCurrentFullness = function() {
-  return this.__currentFullness;
+  return this._currentFullness;
 };
 
 iKettle.prototype.boilWater = function(temperature) {
-  if (this._isDeviceOn() && this.__currentFullness) {
+  if (this._isDeviceOn() && this._currentFullness) {
     this.setTemperature(temperature);
     return new Promise(resolve => {
       this._timer = setInterval(() => {
-        if (this.__currentTemperature === this.__modes[this.__currentMode]) {
+        if (this._currentTemperature === this._modes[this._currentMode]) {
           resolve();
           this.off();
           this._deleteTimer();
         } else {
-          this.__currentTemperature++;
-          this.__currentFullness--;
+          this._currentTemperature++;
+          this._currentFullness--;
         }
       }, 1000);
     }).then(() => {
-      console.log(this.__currentTemperature);
+      console.log(this._currentTemperature);
     });
   }
 };
