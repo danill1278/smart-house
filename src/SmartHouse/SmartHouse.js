@@ -18,11 +18,14 @@ export const SmartHouse = function(name = "Smart House") {
   };
 
   this.getAllDevicesByModel = function(model) {
-    return this._devices.filter(device => {
-      if (device.getModel() == model) {
-        return device;
-      }
-    });
+    if (typeof name === 'string' && name.length) {
+      return this._devices.filter(device => {
+        if (device.getModel() == model) {
+          return device;
+        }
+      });
+    }
+    
   };
 
   this.getDeviceByName = function(name) {
@@ -35,18 +38,17 @@ export const SmartHouse = function(name = "Smart House") {
 
       if ( !device) {
         Logger.warning('There is no device with this name');
-        return false;
       }
 
       return device;
 
     } else {
       Logger.error('Please, enter valid device name');
-      return false;
     }
   };
 
   this.deleteDevicesByModel = function(model) {
+
     this._devices.filter((device, i) => {
       if (device.getModel() == model) {
         this._devices.splice(i, 1);
@@ -56,11 +58,14 @@ export const SmartHouse = function(name = "Smart House") {
 
   this._isNameUnic = function(name) {
     let result = this._devices.find(device => {
-      if (device.getName() === name) {
+      console.log(device.getName(),name);
+      
+      if (device.getName() === name) {        
         return true;
-      }
+      };
     });
-    console.log(result);
+
+    
     
 
     return result;
@@ -81,8 +86,7 @@ export const SmartHouse = function(name = "Smart House") {
       return false;
     }
     
-    if (this._isNameUnic()) {
-      console.log('unic');
+    if (this._isNameUnic(name)) {
       
       Logger.error('Device with those name already exist');
       return false;
@@ -99,9 +103,7 @@ export const SmartHouse = function(name = "Smart House") {
   };
 
   this.addDevice = function(device) {
-    if (device instanceof Device) {
-      console.log(device.getName());
-      
+    if (device instanceof Device) {      
       this._checkName(device.getName());
       this._devices.push(device);
     } else {
