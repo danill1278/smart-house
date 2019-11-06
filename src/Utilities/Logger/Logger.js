@@ -7,4 +7,4 @@ const Logger = {
     }
 };
 
-export default Logger;
+export Logger;

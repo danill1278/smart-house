@@ -1,4 +1,4 @@
-const SmartHouse = function(name = "New House") {
+const SmartHouse = function(name = "Smart House") {
   this._devices = [];
   this._activeDevice = null;
 
@@ -28,14 +28,14 @@ const SmartHouse = function(name = "New House") {
   }
 
   this.deleteDevicesByModel = function(model) {
+    console.log(this._devices); 
     this._devices.filter((device, i) => {
-      console.log(i);
-      
+      console.log(i);      
       if ( device.getModel() == model) {
-          return device;
-          this._devices.splice(i, 0);
+          this._devices.splice(i, 1);    
       }
     });
+    console.log(this._devices); 
   }
 
   this._checkName = function(name) {

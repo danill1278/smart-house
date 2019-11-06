@@ -2,8 +2,8 @@ Class iKettle {
 	Properties:
 		#name: String 
 		#state: Boolean = false
-		-modes: Object
-		-currentMode: String 
+		-modes: Array
+		-currentMode: Number
 		-currentTemperature: Number = 20
 		-maxFullness: Number
 		-currentFullness: Number = 0
@@ -17,8 +17,9 @@ Class iKettle {
         #get state(): Boolean
 		#isDeviceOn():Boolean
 		#info(): void
-        +boilWater(): void
-		+changeMode(String): void
+        +boilWater(string): void
+		+nextMode(): void
+		+previousMode(): void
 		+get currentMode(): String
 		+set temperature(): void
 		+addWater(number): void
