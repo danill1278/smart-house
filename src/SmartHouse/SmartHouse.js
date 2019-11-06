@@ -1,8 +1,44 @@
-import Logger from '../Utilities/Logger/Logger';
-
 const SmartHouse = function(name = "New House") {
-  this.__devices = [];
-  this.__checkName = function(name) {
+  this._devices = [];
+  this._activeDevice = null;
+
+  if (this._checkName(name)) {
+    this._name = name;
+  }
+
+  this.onAll = function() {
+    this._devices.forEach(device => device.on());
+  };
+
+  this.offAll = function() {
+    this._devices.forEach(device => device.off());
+  };
+
+  this.deleteAllDevices = function() {
+    this.offAll();
+    this._devices = [];
+  };
+
+  this.getAllDevicesByModel = function(model) {
+    return this._devices.filter((device) => {
+      if ( device.getModel() == model) {
+         return device;
+      }
+    });
+  }
+
+  this.deleteDevicesByModel = function(model) {
+    this._devices.filter((device, i) => {
+      console.log(i);
+      
+      if ( device.getModel() == model) {
+          return device;
+          this._devices.splice(i, 0);
+      }
+    });
+  }
+
+  this._checkName = function(name) {
     if (typeof name !== "string") {
       Logger.error("Name must be a string");
     }
@@ -14,55 +50,44 @@ const SmartHouse = function(name = "New House") {
       return true;
     }
   };
-  if (this.__checkName(name)) {
-    this.__name = name;
-  }
 
   this.getName = function() {
-    return this.__name;
+    return this._name;
   };
 
   this.addDevice = function(value) {
-    if (value instanceof iKettle || value instanceof Speaker) {
-      this.__devices.push(value);
+    if (value instanceof Device) {
+      this._devices.push(value);
     } else {
       Logger.error("Devices must be objects of iKettle or Speaker");
     }
   };
-  this.deleteDeviceById = function(id) {
-    let deleteObjIndex = this.__devices.find((device, index) => {
-      if (device.getId() === id) {
+
+  this.deleteDeviceByName = function(name) {
+    let deleteObjIndex = this._devices.find((device, index) => {
+      if (device.getName() === name) {
         return index;
       }
     });
-    this.__devices.splice(deleteObjIndex, 1);
+
+    this._devices[deleteObjIndex].off();
+    this._devices.splice(deleteObjIndex, 1);
   };
 
-  this.onAll = function() {
-    this.__devices.forEach(device => device.on());
-  };
-  this.offAll = function() {
-    this.__devices.forEach(device => device.off());
-  };
+  
 
   this.getAllDevices = function() {
-    return this.__devices;
+    return this._devices;
   };
-  this.deleteAllDevices = function() {
-    this.__devices = [];
-  };
+
    
-  this.getDeviceById = function(id) {
-    return this.__devices.find(device => {
-      if (device.getId() === id) {
+  this.getDeviceByName = function(name) {
+    return this._devices.find(device => {
+      if (device.getName() === name) {
         return device;
       }
     });
   };
 };
-
-
-
-
 
 export default SmartHouse;
