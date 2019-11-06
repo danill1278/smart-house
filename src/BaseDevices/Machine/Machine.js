@@ -58,4 +58,4 @@ Machine.prototype.info = function() {
         status: ${this.getState()}`;
 };
 
-export default Machine;
+export Machine;

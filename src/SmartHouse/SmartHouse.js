@@ -1,4 +1,4 @@
-import Logger from '../Utilities/Logger/Logger';
+import {Logger} from '../Utilities/Logger/Logger';
 
 const SmartHouse = function(name = "New House") {
   this.__devices = [];
@@ -65,4 +65,4 @@ const SmartHouse = function(name = "New House") {
 
 
 
-export default SmartHouse;
+export SmartHouse;

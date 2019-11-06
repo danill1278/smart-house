@@ -1,4 +1,4 @@
-import Machine from '../BaseDevices/Machine/Machine';
+import {Machine} from '../BaseDevices/Machine/Machine';
 
 
 const Speaker = function(trackList, model = "Jeka Active") {
@@ -284,4 +284,4 @@ Speaker.prototype._isDeviceInPlayingModeNow = function() {
 
 
 
-export default Speaker;
+export Speaker;
