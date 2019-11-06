@@ -34,14 +34,16 @@ Device.prototype._isDeviceOn = function() {
 Device.prototype._checkNameValidity = function(name) {
   if (typeof name !== "string") {
     Logger.error("Name must be a string");
+    return false;
   }
-  const regex = /^[\w\d\s]{5,10}$/;
-  const result = name.match(regex);
+  name = name.trim();
+  const regex = /[\w\d\s]{5,10}/;
+  const result = regex.test(name);
   if (!result) {
-    Logger.error("Name must contain 5-10 characters");
-  } else {
-    return true;
+    Logger.error("Name must include more than 5 characters");
+    return false;
   }
+  return true;
 };
 
 Device.prototype.on = function() {

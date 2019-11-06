@@ -25,36 +25,48 @@ export const SmartHouse = function(name = "Smart House") {
     });
   };
 
+  this.getDeviceByName = function(name, showMessage = true) {
+    let device = null;
+    if (typeof name === 'string' && name.length) {
+      device = this._devices.find(device => {
+        if (device.getName() === name) {
+          return device;
+        }
+      });
+      if ( !device && showMessage) {
+        Logger.warning('There are no devices with such name');
+      }
+    } else {
+      Logger.error('Please, enter valid device name');
+    }
+  };
+
   this.deleteDevicesByModel = function(model) {
-    console.log(this._devices);
     this._devices.filter((device, i) => {
-      console.log(i);
       if (device.getModel() == model) {
         this._devices.splice(i, 1);
       }
     });
-    console.log(this._devices);
   };
 
   this._checkName = function(name) {
-    name = name.trim();
     // return true;
     if (typeof name !== "string") {
       Logger.error("Name must be a string");
       return false;
     }
+    name = name.trim();
     const regex = /[\w\d\s]{5,10}/;
-    const result = name.match(regex);
-    if (result != null) {
-      Logger.warning("Name must contain 5-10 characters");
+    const result = regex.test(name);
+    
+    if (!result) {
+      Logger.error("Name must include more than 5 characters");
       return false;
     }
-    let isNameUnic = this._devices.find(device => {
-      if ( device.getName() === name ) {
-        return true;
-      }
-    });
-    if (isNameUnic) {
+
+    let isNameUnic = this.getDeviceByName(name, false);
+    
+    if (!isNameUnic) {
       Logger.error('Device with those name already exist');
       return false;
     }
@@ -71,6 +83,9 @@ export const SmartHouse = function(name = "Smart House") {
 
   this.addDevice = function(device) {
     if (device instanceof Device) {
+      console.log(device.getName());
+      
+      this._checkName(device.getName());
       this._devices.push(device);
     } else {
       Logger.error("Devices must be objects of iKettle or Speaker");
@@ -80,7 +95,8 @@ export const SmartHouse = function(name = "Smart House") {
   this.deleteDeviceByName = function(name) {
     let deleteObjIndex = this._devices.find((device, index) => {
       if (device.getName() === name) {
-        return index;
+        deleteObjIndex = index;
+        return true;
       }
     });
 
@@ -90,13 +106,5 @@ export const SmartHouse = function(name = "Smart House") {
 
   this.getAllDevices = function() {
     return this._devices;
-  };
-
-  this.getDeviceByName = function(name) {
-    return this._devices.find(device => {
-      if (device.getName() === name) {
-        return device;
-      }
-    });
   };
 };

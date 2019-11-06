@@ -1,8 +1,8 @@
 import { Device } from "../BaseDevices/Device/Device";
 import { Logger } from "../Utilities/Logger/Logger";
 
-export const iKettle = function(name, model = "iKettle") {
-  Device.call(this, name, model);
+export const iKettle = function(name) {
+  Device.call(this, name, "iKettle");
 
   this._modes = [
     { standart: 100 },

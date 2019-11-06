@@ -3,6 +3,6 @@ export const Logger = {
     console.warn(text);
   },
   error: function(text) {
-    console.error(text);
+    throw new Error(text);
   }
 };

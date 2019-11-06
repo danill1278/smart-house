@@ -2,7 +2,7 @@ import { Device } from '../BaseDevices/Device/Device';
 
 
 export const Speaker = function(name, trackList) {
-  Device.call(this, name, model = "Speaker");
+  Device.call(this, name, "Speaker");
 
   // device play/pause
   this._playbackState = false;
