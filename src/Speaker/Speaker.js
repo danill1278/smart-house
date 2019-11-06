@@ -1,8 +1,8 @@
-import { Machine } from '../BaseDevices/Machine/Machine';
+import { Device } from '../BaseDevices/Device/Device';
 
 
-export const Speaker = function(trackList, model = "Jeka Active") {
-  Machine.call(this, model);
+export const Speaker = function(name, trackList) {
+  Device.call(this, name, model = "Speaker");
 
   // device play/pause
   this._playbackState = false;
@@ -69,12 +69,12 @@ export const Speaker = function(trackList, model = "Jeka Active") {
 
 // methods:
 
-Speaker.prototype = Object.create(Machine.prototype);
+Speaker.prototype = Object.create(Device.prototype);
 Speaker.prototype.constructor = Speaker;
 
 //////////////
 Speaker.prototype.on = function() {
-  Machine.prototype.on.call(this);
+  Device.prototype.on.call(this);
 
   // check is device has flash card
   if (this._flashCard) {
@@ -89,13 +89,13 @@ Speaker.prototype.off = function() {
   this.togglePlaybackStatus();
 
   // turn off device
-  Machine.prototype.off.call(this);
+  Device.prototype.off.call(this);
 };
 
 // log info about current device state
 Speaker.prototype.info = function() {
   console.log(`
-        ${Machine.prototype.info.call(this)}
+        ${Device.prototype.info.call(this)}
         volume: ${this._currentVolume},
         playing: ${this._playbackState},
         currentSong: ${this._trackList[this._currentTrack].name},
@@ -124,7 +124,7 @@ Speaker.prototype._stopPlaying = function() {
   this._isDeviceOn();
 
   // delete async time counter
-  Machine.prototype._deleteTimer.call(this);
+  Device.prototype._deleteTimer.call(this);
 };
 
 Speaker.prototype._startPlaying = function(playSongFrom) {

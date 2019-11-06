@@ -1,8 +1,8 @@
-import { Machine } from "../BaseDevices/Machine/Machine";
+import { Device } from "../BaseDevices/Device/Device";
 import { Logger } from "../Utilities/Logger/Logger";
 
-export const iKettle = function(name) {
-  Machine.call(this, name);
+export const iKettle = function(name, model = "iKettle") {
+  Device.call(this, name, model);
 
   this._modes = [
     { standart: 100 },
@@ -18,12 +18,12 @@ export const iKettle = function(name) {
   this._currentTemperature = 20;
 };
 
-iKettle.prototype = Object.create(Machine.prototype);
+iKettle.prototype = Object.create(Device.prototype);
 iKettle.prototype.constructor = iKettle;
 
 iKettle.prototype.info = function() {
   return `
-        ${Machine.prototype.info.call(this)}
+        ${Device.prototype.info.call(this)}
         mode: ${this._currentMode};
         currentFullness: ${this._currentFullness};
     `;
