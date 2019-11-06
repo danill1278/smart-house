@@ -1,7 +1,7 @@
-import {Machine} from '../BaseDevices/Machine/Machine';
+import { Machine } from '../BaseDevices/Machine/Machine';
 
 
-const Speaker = function(trackList, model = "Jeka Active") {
+export const Speaker = function(trackList, model = "Jeka Active") {
   Machine.call(this, model);
 
   // device play/pause
@@ -283,5 +283,3 @@ Speaker.prototype._isDeviceInPlayingModeNow = function() {
 //safety methods end
 
 
-
-export Speaker;

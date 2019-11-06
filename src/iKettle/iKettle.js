@@ -1,17 +1,16 @@
-import {Machine} from '../BaseDevices/Machine/Machine';
-import {Logger} from '../Utilities/Logger/Logger';
+import { Machine } from "../BaseDevices/Machine/Machine";
+import { Logger } from "../Utilities/Logger/Logger";
 
-
-const iKettle = function(name) {
+export const iKettle = function(name) {
   Machine.call(this, name);
-  
+
   this._modes = [
-      {standart: 100},
-      {tea: 78},
-      {coffee: 85},
-      {porridge: 72},
-      {"baby food": 70}
-    ];
+    { standart: 100 },
+    { tea: 78 },
+    { coffee: 85 },
+    { porridge: 72 },
+    { "baby food": 70 }
+  ];
   this._currentMode = this._modes[0];
   this._maxFullness = 1000;
   this._minFullness = 100;
@@ -40,7 +39,7 @@ iKettle.prototype.setTemperature = function(value) {
 
 iKettle.prototype.nextMode = function() {
   let length = this._modes.length - 1;
-  if(this._currentMode === this._modes[length]){
+  if (this._currentMode === this._modes[length]) {
     this._currentMode = this._modes[0];
   } else {
     this._currentMode++;
@@ -49,7 +48,7 @@ iKettle.prototype.nextMode = function() {
 
 iKettle.prototype.previousMode = function() {
   let length = this._modes.length - 1;
-  if(this._currentMode === this._modes[0]){
+  if (this._currentMode === this._modes[0]) {
     this._currentMode = this._modes[length];
   } else {
     this._currentMode--;
@@ -91,7 +90,7 @@ iKettle.prototype.boilWater = function(temperature) {
           this.off();
           this._deleteTimer();
         } else {
-          this._currentTemperature+=2;
+          this._currentTemperature += 2;
           this._currentFullness--;
         }
       }, 1000);
@@ -100,5 +99,3 @@ iKettle.prototype.boilWater = function(temperature) {
     });
   }
 };
-
-export iKettle;
