@@ -26,7 +26,7 @@ Device.prototype.getModel = function() {
 
 Device.prototype._isDeviceOn = function() {
   if (!this.getState()) {
-    Logger.error("Turn on device, please!");
+    throw new Error("Turn on device, please!");
   }
   return true;
 };
@@ -61,5 +61,6 @@ Device.prototype._deleteTimer = function() {
 Device.prototype.info = function() {
   return `
         model: ${this.getModel()},
+        name: ${this.getName()},
         status: ${this.getState()}`;
 };

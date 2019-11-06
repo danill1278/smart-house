@@ -11,11 +11,11 @@ export const iKettle = function(name) {
     { porridge: 72 },
     { "baby food": 70 }
   ];
-  this._currentMode = this._modes[0];
+  this._currentMode = 0;
   this._maxFullness = 1000;
   this._minFullness = 100;
   this._currentFullness = 0;
-  this._currentTemperature = 20;
+  this._currentTemperature = 28;
 };
 
 iKettle.prototype = Object.create(Device.prototype);
@@ -24,17 +24,9 @@ iKettle.prototype.constructor = iKettle;
 iKettle.prototype.info = function() {
   return `
         ${Device.prototype.info.call(this)}
-        mode: ${this._currentMode};
+        mode: ${Object.keys(this._modes[this._currentMode])};
         currentFullness: ${this._currentFullness};
     `;
-};
-
-iKettle.prototype.setTemperature = function(value) {
-  if (typeof value == "number" && value >= 10 && value <= 70) {
-    this._currentTemperature = value;
-  } else {
-    Logger.warning("Temperature must be in range from 10 to 70C");
-  }
 };
 
 iKettle.prototype.nextMode = function() {
@@ -56,7 +48,7 @@ iKettle.prototype.previousMode = function() {
 };
 
 iKettle.prototype.getCurrentMode = function() {
-  return this._currentMode;
+  return Object.keys(this._modes[this._currentMode]);
 };
 
 iKettle.prototype.addWater = function(value) {
@@ -80,12 +72,14 @@ iKettle.prototype.getCurrentFullness = function() {
   return this._currentFullness;
 };
 
-iKettle.prototype.boilWater = function(temperature) {
+iKettle.prototype.boilWater = function() {
   if (this._isDeviceOn() && this._currentFullness) {
-    this.setTemperature(temperature);
     return new Promise(resolve => {
       this._timer = setInterval(() => {
-        if (this._currentTemperature === this._modes[this._currentMode]) {
+        if (
+          this._currentTemperature >=
+          Object.values(this._modes[this._currentMode])
+        ) {
           resolve();
           this.off();
           this._deleteTimer();

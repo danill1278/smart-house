@@ -1,5 +1,6 @@
-import {Device} from '../BaseDevices/Device/Device'; 
+import { Device } from "../BaseDevices/Device/Device";
 import { Logger } from "../Utilities/Logger/Logger";
+
 export const SmartHouse = function(name = "Smart House") {
   this._devices = [];
   this._activeDevice = null;

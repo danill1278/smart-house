@@ -21,7 +21,7 @@ Class iKettle {
 		+nextMode(): void
 		+previousMode(): void
 		+get currentMode(): String
-		+set temperature(): void
+		-set temperature(): void
 		+addWater(number): void
 		+get currentFullness(): Number
 
