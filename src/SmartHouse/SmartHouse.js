@@ -61,8 +61,4 @@ const SmartHouse = function(name = "New House") {
   };
 };
 
-
-
-
-
 export SmartHouse;
