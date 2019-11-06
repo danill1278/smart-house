@@ -1,4 +1,4 @@
-import {Device} from '../BaseDevices/Device/Device'; 
+import { Device } from "../BaseDevices/Device/Device";
 import { Logger } from "../Utilities/Logger/Logger";
 
 export const SmartHouse = function(name = "Smart House") {
@@ -20,7 +20,7 @@ export const SmartHouse = function(name = "Smart House") {
 
   this.getAllDevicesByModel = function(model) {
     return this._devices.filter(device => {
-      if (device.getModel() == model) {
+      if (device.getModel() === model) {
         return device;
       }
     });
@@ -30,7 +30,7 @@ export const SmartHouse = function(name = "Smart House") {
     console.log(this._devices);
     this._devices.filter((device, i) => {
       console.log(i);
-      if (device.getModel() == model) {
+      if (device.getModel() === model) {
         this._devices.splice(i, 1);
       }
     });
@@ -51,12 +51,12 @@ export const SmartHouse = function(name = "Smart House") {
       return false;
     }
     let isNameUnic = this._devices.find(device => {
-      if ( device.getName() === name ) {
+      if (device.getName() === name) {
         return true;
       }
     });
     if (isNameUnic) {
-      Logger.error('Device with those name already exist');
+      Logger.error("Device with those name already exist");
       return false;
     }
     return true;

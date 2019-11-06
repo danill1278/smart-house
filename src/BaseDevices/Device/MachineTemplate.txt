@@ -8,7 +8,7 @@ class Machine {
     methods:
 
         +Machine( name: String )
-
+        #info: string
         +get state(): Boolean this.#state
 
         +get name(): String this.#name
