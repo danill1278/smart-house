@@ -1,7 +1,6 @@
 import { Device } from '../BaseDevices/Device/Device';
 import { Logger } from '../Utilities/Logger/Logger';
 
-
 export const Speaker = function(name, trackList) {
   Device.call(this, name);
 
@@ -19,6 +18,7 @@ export const Speaker = function(name, trackList) {
   // initializing of track-list
   if (Array.isArray(trackList) && trackList.length) {
     // tracklist passed in constructor
+    let isInputTrackListValid = true;
     trackList.forEach(track => {
       if (
         !(
@@ -28,11 +28,14 @@ export const Speaker = function(name, trackList) {
           track.duration > 0
         )
       ) {
-        Logger.warning("Invalid input tracklist data, will be used default tracklist");
+        isInputTrackListValid = false;
       }
-
-      this._trackList = trackList;
     });
+    if (!isInputTrackListValid) {
+      Logger.warning("Invalid input tracklist data, will be used default tracklist");
+    } else {
+      this._trackList = trackList;
+    }
   } else {
     //default tracklist
     this._trackList = Speaker.defaultTrackList;

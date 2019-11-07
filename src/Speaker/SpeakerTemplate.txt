@@ -3,7 +3,7 @@ class Speaker {
         #playbackState: Boolean false,
         #volumeMin: Number 0,
         #volumeMax: Number 10,
-        #currentVolume: Number 5,      
+        #currentVolume: Number 5,
         #currentTimerValue: Number null,
         #trackList: [Object] [{
             name: String ,
@@ -11,17 +11,15 @@ class Speaker {
         }],
         #currentTrack: Number 0
     methods:
-        +Speaker( name: String, trackList: [Object] ) 
-        +togglePlaybackStatus(): void         
+        +Speaker( name: String, trackList: [Object] )
+        +togglePlaybackStatus(): void
         +get PlayPauseState(): Boolean #playbackState
         +info(): String
         #startPlaying(): void
         #stopPlaying(): void
-        +nextTrack(): void
-        +previousTrack(): void        
-        +rewindForward(): void        
-        +rewindBack(): void
+        +toggleTrack(String): void
+        +rewindTrack(): void
         +increaseVolume(): void
-        +decreaseVolume(): void        
-        #isDeviceInPlayingModeNow(): void      
+        +decreaseVolume(): void
+        #isDeviceInPlayingModeNow(): void
 }

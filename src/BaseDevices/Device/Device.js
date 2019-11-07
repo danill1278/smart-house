@@ -57,7 +57,6 @@ Device.prototype._deleteTimer = function() {
 
 Device.prototype.toString = function() {
   return `
-model: ${this.getModel()},
 name: ${this.getName()},
-status: ${this.getState() ? 'On' : 'Off'}`;
+status: ${this.getState()}`;
 };
