@@ -1,4 +1,5 @@
 import { Device } from '../BaseDevices/Device/Device';
+import { Logger } from '../Utilities/Logger/Logger';
 
 
 export const Speaker = function(name, trackList) {
@@ -11,9 +12,6 @@ export const Speaker = function(name, trackList) {
   this._volumeMin = 0;
   this._volumeMax = 10;
   this._currentVolume = 5;
-
-  //is flash card in device
-  this._flashCard = true;
 
   //track duration timer count
   this._currentTimerValue = 0;
@@ -53,7 +51,7 @@ export const Speaker = function(name, trackList) {
           track.duration > 0
         )
       ) {
-        throw new Error("Invalid input tracklist data");
+        Logger.warning("Invalid input tracklist data, will be used default tracklist");
       }
 
       this._trackList = trackList;
@@ -77,9 +75,6 @@ Speaker.prototype.on = function() {
   Device.prototype.on.call(this);
 
   // check is device has flash card
-  if (this._flashCard) {
-    this.togglePlaybackStatus();
-  }
 };
 
 Speaker.prototype.off = function() {
@@ -97,10 +92,10 @@ Speaker.prototype.info = function() {
   console.log(`
         ${Device.prototype.info.call(this)}
         volume: ${this._currentVolume},
-        playing: ${this._playbackState},
+        playing: ${this._playbackState ? 'Play' : 'Pause'},
         currentSong: ${this._trackList[this._currentTrack].name},
-        songDuration: ${this._trackList[this._currentTrack].duration},
-        currentTime: ${this._currentTimerValue}
+        songDuration: ${this._trackList[this._currentTrack].duration}s,
+        currentTime: ${this._currentTimerValue}s
         `);
 };
 
@@ -145,7 +140,7 @@ Speaker.prototype._startPlaying = function(playSongFrom) {
       this._currentTimerValue = count;
     }
     // log info on each timer tic
-    this.info();
+    // this.info();
   };
 
   // set async time counter
@@ -179,7 +174,7 @@ Speaker.prototype.previousTrack = function() {
 Speaker.prototype.toggleTrack = function(toggleDirection) {
   this._isDeviceOn();
   if (typeof toggleDirection !== "string") {
-    throw new Error("Please pass 'next' or 'previous' value as a parameter");
+    Logger.error("Please pass 'next' or 'previous' value as a parameter");
   }
 
   // delete old timer
@@ -209,11 +204,8 @@ Speaker.prototype.rewindTrack = function(rewindDirection) {
     typeof rewindDirection !== "string" ||
     (rewindDirection !== "forward" && rewindDirection !== "back")
   ) {
-    throw new Error(
-      "Please pass 'forward' or 'back' string value as a parameter"
-    );
+    Logger.error("Please pass 'forward' or 'back' string value as a parameter");
   }
-
   // setup random rewind time
   const rewindTime = Math.random().toFixed(1) * 10;
   switch (rewindDirection) {
@@ -274,12 +266,9 @@ Speaker.prototype.decreaseVolume = function() {
 
 //check is device playing track now
 Speaker.prototype._isDeviceInPlayingModeNow = function() {
-  if (!this._playbackState)
-    throw new Error(
+  if (!this._playbackState) {
+    Logger.warning(
       "Toggle device to playing mode before starting this operation"
     );
+  }
 };
-
-//safety methods end
-
-
