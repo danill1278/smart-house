@@ -12,8 +12,8 @@ Class SmartHouse {
         +addDevice(obj): void
         +getAllDevices(): Array
         +getDeviceByName(): Obj
-        +getAllDevicesByModel(string): Array
-        +deleteDevicesByModel(string): void
+        +getAllDevicesByModel(obj): Array
+        +deleteDevicesByModel(obj): void
         +deleteDeviceByName(string): void
         +deleteAllDevices(): void
 }

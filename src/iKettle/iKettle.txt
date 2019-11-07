@@ -1,14 +1,14 @@
 Class iKettle {
 	Properties:
 		#name: String
-		-modes: Array
-		-currentMode: Number
-		-currentTemperature: Number = 26
-		-maxFullness: Number
-		-currentFullness: Number = 0
-		-minFullness: Number
+		#modes: Array
+		#currentMode: Number
+		#currentTemperature: Number = 26
+		#maxFullness: Number
+		#currentFullness: Number = 0
+		#minFullness: Number
 	Methods:  
-		#constructor(name)
+		+constructor(name)
         +boilWater(): void
 		+nextMode(): void
 		+previousMode(): void
