@@ -1,7 +1,6 @@
 import { Logger } from "../../Utilities/Logger/Logger";
 
-export const Device = function(name, model = "device") {
-  this._model = model;
+export const Device = function(name) {
   this._state = false;
   if (this._checkNameValidity(name)) {
     this._name = name;
@@ -20,9 +19,6 @@ Device.prototype.setName = function(name) {
   }
 };
 
-Device.prototype.getModel = function() {
-  return this._model;
-};
 
 Device.prototype._isDeviceOn = function() {
   if (!this.getState()) {
@@ -60,7 +56,6 @@ Device.prototype._deleteTimer = function() {
 
 Device.prototype.info = function() {
   return `
-        model: ${this.getModel()},
         name: ${this.getName()},
         status: ${this.getState()}`;
 };
