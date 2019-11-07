@@ -1,7 +1,6 @@
 import { Logger } from "../../Utilities/Logger/Logger";
 
-export const Device = function(name, model = "device") {
-  this._model = model;
+export const Device = function(name) {
   this._state = false;
   if (this._checkNameValidity(name)) {
     this._name = name;
@@ -11,17 +10,15 @@ export const Device = function(name, model = "device") {
 Device.prototype.getState = function() {
   return this._state;
 };
+
 Device.prototype.getName = function() {
   return this._name;
 };
+
 Device.prototype.setName = function(name) {
   if (this._checkNameValidity(name)) {
     this._name = name;
   }
-};
-
-Device.prototype.getModel = function() {
-  return this._model;
 };
 
 Device.prototype._isDeviceOn = function() {
@@ -58,7 +55,7 @@ Device.prototype._deleteTimer = function() {
   clearInterval(this._timer);
 };
 
-Device.prototype.info = function() {
+Device.prototype.toString = function() {
   return `
 model: ${this.getModel()},
 name: ${this.getName()},

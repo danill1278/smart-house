@@ -47,7 +47,7 @@ export const SmartHouse = function(name = "Smart House") {
   };
 
   this.deleteDevicesByModel = function(model) {
-
+    let flag = this._device.length;
     this._devices.filter((device, i) => {
       if (device.getModel() == model) {
         this._devices.splice(i, 1);
