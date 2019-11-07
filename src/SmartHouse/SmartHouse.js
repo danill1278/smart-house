@@ -26,7 +26,7 @@ export const SmartHouse = function(name = "Smart House") {
         }
       });
     }
-    
+
   };
 
   this.getDeviceByName = function(name) {
@@ -59,15 +59,13 @@ export const SmartHouse = function(name = "Smart House") {
 
   this._isNameUnic = function(name) {
     let result = this._devices.find(device => {
-      console.log(device.getName(),name);
-      
-      if (device.getName() === name) {        
+      if (device.getName() === name) {
         return true;
       };
     });
 
-    
-    
+
+
 
     return result;
   };
@@ -81,14 +79,14 @@ export const SmartHouse = function(name = "Smart House") {
     name = name.trim();
     const regex = /[\w\d\s]{5,10}/;
     const result = regex.test(name);
-    
+
     if (!result) {
       Logger.error("Name must include more than 5 characters");
       return false;
     }
-    
+
     if (this._isNameUnic(name)) {
-      
+
       Logger.error('Device with those name already exist');
       return false;
     }
@@ -104,7 +102,7 @@ export const SmartHouse = function(name = "Smart House") {
   };
 
   this.addDevice = function(device) {
-    if (device instanceof Device) {      
+    if (device instanceof Device) {
       this._checkName(device.getName());
       this._devices.push(device);
     } else {
@@ -112,17 +110,14 @@ export const SmartHouse = function(name = "Smart House") {
     }
   };
 
-  
+
 
   this.deleteDeviceByName = function(name) {
     let deleteObjIndex = this._devices.find((device, index) => {
       if (device.getName() === name) {
-        deleteObjIndex = index;
-        return true;
+        return index;
       }
     });
-
-    this._devices[deleteObjIndex].off();
     this._devices.splice(deleteObjIndex, 1);
   };
 

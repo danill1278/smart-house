@@ -10,7 +10,6 @@ class Machine {
         +Machine( name: String )
         #info: string
         +get state(): Boolean this.#state
-
         +get name(): String this.#name
 
         +set name(name: String): void

@@ -1,4 +1,4 @@
-import {Logger} from '../../Utilities/Logger/Logger';
+import { Logger } from "../../Utilities/Logger/Logger";
 
 export const Device = function(name, model = "device") {
   this._model = model;
@@ -26,7 +26,7 @@ Device.prototype.getModel = function() {
 
 Device.prototype._isDeviceOn = function() {
   if (!this.getState()) {
-    throw new Error("Turn on device, please!");
+    Logger.error("Turn on device, please!");
   }
   return true;
 };
