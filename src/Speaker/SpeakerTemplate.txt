@@ -1,44 +1,27 @@
 class Speaker {
     properties:
         #playbackState: Boolean false,
-
         #volumeMin: Number 0,
         #volumeMax: Number 10,
-        #currentVolume: Number 5,
-      
+        #currentVolume: Number 5,      
         #currentTimerValue: Number null,
-
         #trackList: [Object] [{
             name: String ,
             duration: Number
         }],
-
         #currentTrack: Number 0
-
     methods:
-        +Speaker( name: String, trackList: [Object] )   
-
-        +togglePlaybackStatus(): void 
-        
+        +Speaker( name: String, trackList: [Object] ) 
+        +togglePlaybackStatus(): void         
         +get PlayPauseState(): Boolean #playbackState
-
         +info(): String
-
         #startPlaying(): void
-
-        #stopPlaying(): void        
-
+        #stopPlaying(): void
         +nextTrack(): void
-
-        +previousTrack(): void
-        
-        +rewindForward(): void
-        
-        +rewindBack(): void 
-
-        +increaseVolume(): void        
-
-        +decreaseVolume(): void   
-        
+        +previousTrack(): void        
+        +rewindForward(): void        
+        +rewindBack(): void
+        +increaseVolume(): void
+        +decreaseVolume(): void        
         #isDeviceInPlayingModeNow(): void      
 }

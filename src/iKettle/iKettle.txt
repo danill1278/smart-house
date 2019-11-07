@@ -1,7 +1,6 @@
 Class iKettle {
 	Properties:
-		#name: String 
-		#state: Boolean = false
+		#name: String
 		-modes: Array
 		-currentMode: Number
 		-currentTemperature: Number = 26
@@ -10,14 +9,6 @@ Class iKettle {
 		-minFullness: Number
 	Methods:  
 		#constructor(name)
-		#get name(): String 
-		#set name (String): void
-		#on(): void
-		#off(): void
-        #get state(): Boolean
-		#isDeviceOn():Boolean
-		#info(): void
-		#deleteTimer(): void
         +boilWater(): void
 		+nextMode(): void
 		+previousMode(): void

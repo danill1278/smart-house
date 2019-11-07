@@ -1,28 +1,19 @@
-class Machine {
+class Device {
     properties:
-    
         #name: String,
-        #state: Boolean false
-        #timer: Number null,
-
+        #state: Boolean
+        #model: String
+        #timer: Number
     methods:
-
-        +Machine( name: String )
-        #info: string
-        +get state(): Boolean this.#state
-        +get name(): String this.#name
-
-        +set name(name: String): void
-        
+        +constructor(name)
+        +info(): string
+        +get state(): Boolean
+        +get name(): String
+        +set name(String): void
+        +get model(): String
         +on(): void
-
         +off(): void
-
         #isDeviceOn(): Boolean
-
         #checkNameValidity(): Boolean
-
         #deleteTimer(): void
-
-        #info(): String
 }

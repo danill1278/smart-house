@@ -60,7 +60,7 @@ Device.prototype._deleteTimer = function() {
 
 Device.prototype.info = function() {
   return `
-        model: ${this.getModel()},
-        name: ${this.getName()},
-        status: ${this.getState() ? 'On' : 'Off'}`;
+model: ${this.getModel()},
+name: ${this.getName()},
+status: ${this.getState() ? 'On' : 'Off'}`;
 };

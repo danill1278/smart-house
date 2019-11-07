@@ -93,13 +93,13 @@ Speaker.prototype.off = function() {
 // log info about current device state
 Speaker.prototype.info = function() {
   console.log(`
-        ${Device.prototype.info.call(this)}
-        volume: ${this._currentVolume},
-        playing: ${this._playbackState ? 'Play' : 'Pause'},
-        currentSong: ${this._trackList[this._currentTrack].name},
-        songDuration: ${this._trackList[this._currentTrack].duration}s,
-        currentTime: ${this._currentTimerValue}s
-        `);
+${Device.prototype.info.call(this)}
+volume: ${this._currentVolume},
+playing: ${this._playbackState ? 'Play' : 'Pause'},
+currentSong: ${this._trackList[this._currentTrack].name},
+songDuration: ${this._trackList[this._currentTrack].duration}s,
+currentTime: ${this._currentTimerValue}s
+`);
 };
 
 // turn device to play/pause modes

@@ -1,5 +1,19 @@
 Class SmartHouse {
     properties:
-        name: string
-
+        #name: string
+        #devices: array
+    methods:
+        +constructor(name)
+        +onAll: void
+        +offAll: void
+        #checkName: Boolean
+        #isNameUnic: Boolean
+        +getName(): string
+        +addDevice(obj): void
+        +getAllDevices(): Array
+        +getDeviceByName(): Obj
+        +getAllDevicesByModel(string): Array
+        +deleteDevicesByModel(string): void
+        +deleteDeviceByName(string): void
+        +deleteAllDevices(): void
 }

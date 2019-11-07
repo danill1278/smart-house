@@ -23,14 +23,15 @@ iKettle.prototype.constructor = iKettle;
 
 iKettle.prototype.info = function() {
   return `
-        ${Device.prototype.info.call(this)}
-        mode: ${Object.keys(this._modes[this._currentMode])};
-        currentFullness: ${this._currentFullness};
-    `;
+${Device.prototype.info.call(this)}
+mode: ${Object.keys(this._modes[this._currentMode])};
+currentFullness: ${this._currentFullness};
+`;
 };
 iKettle.prototype.off = function() {
   Device.prototype.off.call(this);
   this._deleteTimer();
+  this._currentTemperature = 26;
 };
 
 iKettle.prototype.nextMode = function() {
@@ -83,7 +84,6 @@ iKettle.prototype.boilWater = function() {
           Object.values(this._modes[this._currentMode])
         ) {
           resolve();
-          this.off();
         } else {
           this._currentTemperature += 2;
           this._currentFullness--;
@@ -91,6 +91,7 @@ iKettle.prototype.boilWater = function() {
       }, 1000);
     }).then(() => {
       console.log(this._currentTemperature);
+      this.off();
     });
   }
 };
