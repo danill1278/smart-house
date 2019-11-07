@@ -28,20 +28,22 @@ iKettle.prototype.info = function() {
         currentFullness: ${this._currentFullness};
     `;
 };
+iKettle.prototype.off = function() {
+  Device.prototype.off.call(this);
+  this._deleteTimer();
+};
 
 iKettle.prototype.nextMode = function() {
-  let length = this._modes.length - 1;
-  if (this._currentMode === this._modes[length]) {
-    this._currentMode = this._modes[0];
+  if (this._currentMode === this._modes.length - 1) {
+    this._currentMode = 0;
   } else {
     this._currentMode++;
   }
 };
 
 iKettle.prototype.previousMode = function() {
-  let length = this._modes.length - 1;
-  if (this._currentMode === this._modes[0]) {
-    this._currentMode = this._modes[length];
+  if (this._currentMode === 0) {
+    this._currentMode = this._modes.length - 1;
   } else {
     this._currentMode--;
   }
@@ -82,7 +84,6 @@ iKettle.prototype.boilWater = function() {
         ) {
           resolve();
           this.off();
-          this._deleteTimer();
         } else {
           this._currentTemperature += 2;
           this._currentFullness--;
