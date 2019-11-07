@@ -63,10 +63,6 @@ export const SmartHouse = function(name = "Smart House") {
         return true;
       };
     });
-
-
-
-
     return result;
   };
 
