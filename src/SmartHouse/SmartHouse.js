@@ -3,7 +3,6 @@ import { Logger } from "../Utilities/Logger/Logger";
 
 export const SmartHouse = function(name = "Smart House") {
   this._devices = [];
-  this._activeDevice = null;
 
   this.onAll = function() {
     this._devices.forEach(device => device.on());
