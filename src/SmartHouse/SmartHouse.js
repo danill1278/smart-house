@@ -25,7 +25,6 @@ export const SmartHouse = function(name = "Smart House") {
         }
       });
     }
-
   };
 
   this.getDeviceByName = function(name) {
@@ -60,13 +59,9 @@ export const SmartHouse = function(name = "Smart House") {
     let result = this._devices.find(device => {
       if (device.getName() === name) {
         return true;
-      };
+      }
     });
-
-
-
-
-    return result;
+    return Boolean(result);
   };
 
   this._checkName = function(name) {
@@ -109,14 +104,15 @@ export const SmartHouse = function(name = "Smart House") {
     }
   };
 
-
-
   this.deleteDeviceByName = function(name) {
-    let deleteObjIndex = this._devices.find((device, index) => {
+    let deleteObjIndex = null;
+    this._devices.find((device, index) => {
       if (device.getName() === name) {
-        return index;
+        deleteObjIndex = index;
+        return true;
       }
     });
+    
     this._devices.splice(deleteObjIndex, 1);
   };
 

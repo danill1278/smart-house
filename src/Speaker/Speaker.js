@@ -81,7 +81,10 @@ Speaker.prototype.off = function() {
   this._isDeviceOn();
 
   // set device in pause mode
-  this.togglePlaybackStatus();
+  this.togglePlaybackStatus(false);
+  this._currentTimerValue = 0;
+  this._currentTrack = 0;
+  this._currentVolume = 5;
 
   // turn off device
   Device.prototype.off.call(this);
@@ -100,11 +103,15 @@ Speaker.prototype.info = function() {
 };
 
 // turn device to play/pause modes
-Speaker.prototype.togglePlaybackStatus = function() {
+Speaker.prototype.togglePlaybackStatus = function(status) {
   this._isDeviceOn();
 
-  // change playing status to oposite
-  this._playbackState = !this._playbackState;
+  if (arguments.length) {
+    this._playbackState = status;
+  } else {
+     // change playing status to oposite
+    this._playbackState = !this._playbackState;
+  }
 
   if (this._playbackState) {
     // start playing tracks
@@ -128,7 +135,7 @@ Speaker.prototype._startPlaying = function(playSongFrom) {
 
   // set time-counter to predefined {playSongFrom} value or start from 0s
   let count = typeof playSongFrom === "number" ? playSongFrom : 0;
-
+  
   let tic = function() {
     // if predefined value more than track duration play next song
     if (count >= this._trackList[this._currentTrack].duration) {
@@ -181,7 +188,8 @@ Speaker.prototype.toggleTrack = function(toggleDirection) {
   this._stopPlaying();
   // set timer value to 0, for starting track from the beginning
   this._currentTimerValue = 0;
-
+  
+  
   switch (toggleDirection) {
     case "next":
       this.nextTrack();

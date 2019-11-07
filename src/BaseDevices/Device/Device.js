@@ -62,5 +62,5 @@ Device.prototype.info = function() {
   return `
         model: ${this.getModel()},
         name: ${this.getName()},
-        status: ${this.getState()}`;
+        status: ${this.getState() ? 'On' : 'Off'}`;
 };
