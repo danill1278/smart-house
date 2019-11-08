@@ -14,7 +14,7 @@ class Speaker {
         +Speaker( name: String, trackList: [Object] )
         +togglePlaybackStatus(): void
         +get PlayPauseState(): Boolean #playbackState
-        +info(): String
+        +toString(): String
         #startPlaying(): void
         #stopPlaying(): void
         +toggleTrack(String): void
