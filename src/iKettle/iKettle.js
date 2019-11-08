@@ -23,7 +23,7 @@ iKettle.prototype.constructor = iKettle;
 
 iKettle.prototype.info = function() {
   return `
-${Device.prototype.info.call(this)}
+${Device.prototype.toString.call(this)}
 mode: ${Object.keys(this._modes[this._currentMode])};
 currentFullness: ${this._currentFullness};
 `;

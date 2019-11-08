@@ -49,7 +49,7 @@ SmartHouse.prototype.getDeviceByName = function(name) {
 };
 
 SmartHouse.prototype.deleteDevicesByModel = function(obj) {
-  let result = this._devices.filter(device => {
+  const result = this._devices.filter(device => {
     return !(device instanceof obj);
   });
   this._devices = result;
@@ -57,12 +57,13 @@ SmartHouse.prototype.deleteDevicesByModel = function(obj) {
 
 SmartHouse.prototype._isNameUnic = function(name) {
   
-  let result = this._devices.find(device => {
+  const result = this._devices.find(device => {
     if (device.getName() === name) {
       return true;
     }
   });
-  return Boolean(!result);
+  
+  return !result;
 };
 
 SmartHouse.prototype._checkName = function(name) {
@@ -92,33 +93,25 @@ SmartHouse.prototype.addDevice = function(device) {
       func: (obj) =>  obj instanceof Device,
       error: () =>  {Logger.error("Devices must be objects of iKettle or Speaker");}
     },
-    checkNameValidity: {
-      func: (obj) => this._checkName(obj.getName())
-    },
     unicOfName: {
       func: (obj) => this._isNameUnic(obj.getName()), 
       error: () => {Logger.error("Device's name must be unic");}
     }
   }
   let rules = Object.keys(matchObj);
-  let rulesCount = rules.length;
-  let loopCounter = 0;
 
-  
-
-  while (loopCounter < rulesCount) {
-    
-    if (matchObj[rules[loopCounter]].func(device)) {
-      loopCounter++;
+  let validStatus = rules.every(rule => {
+    if ( matchObj[rule].func(device) ) {
+      return true;
     } else {
-      if (matchObj[rules[loopCounter]].error)
-        matchObj[rules[loopCounter]].error();
-      break;
-    }
-  }
+      if (matchObj[rule].error) {
+        matchObj[rule].error();
+      }
+      return false;
+    }    
+  })
 
-
-  if (loopCounter === rulesCount) {
+  if ( validStatus ) {
     this._devices.push(device);
   }
 };

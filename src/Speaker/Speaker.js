@@ -37,13 +37,14 @@ export const Speaker = function(name, trackList) {
     }
   } else {
     //default tracklist
-    this._trackList = Speaker.defaultTrackList;
+    this._trackList = this._defaultTrackList;
   }
 
   // track wich playing now
   this._currentTrack = 0;
 };
-Speaker.defaultTrackList = [
+
+Speaker.prototype._defaultTrackList = [
   {
     name: "Song 1",
     duration: 8
