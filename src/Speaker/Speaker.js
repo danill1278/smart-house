@@ -1,5 +1,5 @@
-import { Device } from '../BaseDevices/Device/Device';
-import { Logger } from '../Utilities/Logger/Logger';
+import { Device } from "../BaseDevices/Device/Device";
+import { Logger } from "../Utilities/Logger/Logger";
 
 export const Speaker = function(name, trackList) {
   Device.call(this, name);
@@ -19,11 +19,11 @@ export const Speaker = function(name, trackList) {
   if (Array.isArray(trackList) && trackList.length) {
     // tracklist passed in constructor
     let isInputTrackListValid = trackList.every(track => {
-      if (        
-          typeof track.name === "string" &&
-          track.name.length &&
-          typeof track.duration === "number" &&
-          track.duration > 0        
+      if (
+        typeof track.name === "string" &&
+        track.name.length &&
+        typeof track.duration === "number" &&
+        track.duration > 0
       ) {
         return true;
       } else {
@@ -31,19 +31,22 @@ export const Speaker = function(name, trackList) {
       }
     });
     if (!isInputTrackListValid) {
-      Logger.warning("Invalid input tracklist data, will be used default tracklist");
+      Logger.warning(
+        "Invalid input tracklist data, will be used default tracklist"
+      );
     } else {
       this._trackList = trackList;
     }
   } else {
     //default tracklist
-    this._trackList = this.defaultTrackList;
+    this._trackList = this._defaultTrackList;
   }
 
   // track wich playing now
   this._currentTrack = 0;
 };
-Speaker.prototype.defaultTrackList = [
+
+Speaker.prototype._defaultTrackList = [
   {
     name: "Song 1",
     duration: 8
@@ -95,7 +98,7 @@ Speaker.prototype.toString = function() {
   return `
 ${Device.prototype.toString.call(this)}
 volume: ${this._currentVolume},
-playing: ${this._playbackState ? 'Play' : 'Pause'},
+playing: ${this._playbackState ? "Play" : "Pause"},
 currentSong: ${this._trackList[this._currentTrack].name},
 songDuration: ${this._trackList[this._currentTrack].duration}s,
 currentTime: ${this._currentTimerValue}s
@@ -135,7 +138,7 @@ Speaker.prototype._startPlaying = function(playSongFrom) {
 
     // set time-counter to predefined {playSongFrom} value or start from 0s
     let count = typeof playSongFrom === "number" ? playSongFrom : 0;
-    
+
     let tic = function() {
       // if predefined value more than track duration play next song
       if (count >= this._trackList[this._currentTrack].duration) {
@@ -190,8 +193,7 @@ Speaker.prototype.toggleTrack = function(toggleDirection) {
     this._stopPlaying();
     // set timer value to 0, for starting track from the beginning
     this._currentTimerValue = 0;
-    
-    
+
     switch (toggleDirection) {
       case "next":
         this._nextTrack();
@@ -216,7 +218,9 @@ Speaker.prototype.rewindTrack = function(rewindDirection) {
       typeof rewindDirection !== "string" ||
       (rewindDirection !== "forward" && rewindDirection !== "back")
     ) {
-      Logger.error("Please pass 'forward' or 'back' string value as a parameter");
+      Logger.error(
+        "Please pass 'forward' or 'back' string value as a parameter"
+      );
     }
     // setup random rewind time
     const rewindTime = Math.random().toFixed(1) * 10;

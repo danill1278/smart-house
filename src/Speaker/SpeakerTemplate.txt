@@ -5,18 +5,17 @@ class Speaker {
         #volumeMax: Number 10,
         #currentVolume: Number 5,
         #currentTimerValue: Number null,
-        strackList: [Object] [{
+        #trackList: [Object] [{
             name: String ,
             duration: Number
         }],
         #currentTrack: Number 0
     methods:
-        +Speaker( name: String, trackList: [Object] )
+        +constructor( name: String, trackList: [Object] ): void
         +togglePlaybackStatus(): void
-        +get PlayPauseState(): Boolean #playbackState
-        +toString(): String
         #startPlaying(): void
         #stopPlaying(): void
+        +get PlayPauseState(): Boolean     
         +toggleTrack(String): void
         #nextTrack(): void
         #previousTrack(): void
