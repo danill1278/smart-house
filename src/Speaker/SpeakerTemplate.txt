@@ -5,7 +5,7 @@ class Speaker {
         #volumeMax: Number 10,
         #currentVolume: Number 5,
         #currentTimerValue: Number null,
-        #trackList: [Object] [{
+        strackList: [Object] [{
             name: String ,
             duration: Number
         }],
@@ -18,7 +18,11 @@ class Speaker {
         #startPlaying(): void
         #stopPlaying(): void
         +toggleTrack(String): void
+        #nextTrack(): void
+        #previousTrack(): void
         +rewindTrack(): void
+        #rewindForward(): void,
+        #rewindBack(): void
         +increaseVolume(): void
         +decreaseVolume(): void
         #isDeviceInPlayingModeNow(): void

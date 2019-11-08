@@ -6,7 +6,6 @@ export const SmartHouse = function(name) {
     this._name = name;
   }
   this._devices = [];
-  this._activeDevice = null;
 };
 
 SmartHouse.prototype.onAll = function() {
@@ -57,10 +56,8 @@ SmartHouse.prototype.deleteDevicesByModel = function(obj) {
 };
 
 SmartHouse.prototype._isNameUnic = function(name) {
-  console.log(name);
   
   let result = this._devices.find(device => {
-    console.log(device.getName(), name);
     if (device.getName() === name) {
       return true;
     }
@@ -107,11 +104,9 @@ SmartHouse.prototype.addDevice = function(device) {
   let rulesCount = rules.length;
   let loopCounter = 0;
 
-  console.log(rules, rulesCount, loopCounter);
   
 
   while (loopCounter < rulesCount) {
-    console.log(matchObj[rules[loopCounter]].func(device));
     
     if (matchObj[rules[loopCounter]].func(device)) {
       loopCounter++;
@@ -122,7 +117,6 @@ SmartHouse.prototype.addDevice = function(device) {
     }
   }
 
-  console.log(rules, rulesCount, loopCounter);
 
   if (loopCounter === rulesCount) {
     this._devices.push(device);

@@ -2,15 +2,13 @@ class Device {
     properties:
         #name: String,
         #state: Boolean
-        #model: String
         #timer: Number
     methods:
         +constructor(name)
-        +info(): string
+        +toString(): string
         +get state(): Boolean
         +get name(): String
         +set name(String): void
-        +get model(): String
         +on(): void
         +off(): void
         #isDeviceOn(): Boolean

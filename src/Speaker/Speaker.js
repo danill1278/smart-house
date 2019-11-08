@@ -18,17 +18,16 @@ export const Speaker = function(name, trackList) {
   // initializing of track-list
   if (Array.isArray(trackList) && trackList.length) {
     // tracklist passed in constructor
-    let isInputTrackListValid = true;
-    trackList.forEach(track => {
-      if (
-        !(
+    let isInputTrackListValid = trackList.every(track => {
+      if (        
           typeof track.name === "string" &&
           track.name.length &&
           typeof track.duration === "number" &&
-          track.duration > 0
-        )
+          track.duration > 0        
       ) {
-        isInputTrackListValid = false;
+        return true;
+      } else {
+        return false;
       }
     });
     if (!isInputTrackListValid) {
@@ -160,7 +159,7 @@ Speaker.prototype.getPlayPauseState = function() {
   return this._playbackState;
 };
 
-Speaker.prototype.nextTrack = function() {
+Speaker.prototype._nextTrack = function() {
   // if there is some more track in track list start next
   if (this._currentTrack < this._trackList.length - 1) {
     this._currentTrack++;
@@ -170,7 +169,7 @@ Speaker.prototype.nextTrack = function() {
   }
 };
 
-Speaker.prototype.previousTrack = function() {
+Speaker.prototype._previousTrack = function() {
   // if there is some more track in track list start next
   if (this._currentTrack > 0) {
     this._currentTrack--;
@@ -195,10 +194,10 @@ Speaker.prototype.toggleTrack = function(toggleDirection) {
     
     switch (toggleDirection) {
       case "next":
-        this.nextTrack();
+        this._nextTrack();
         break;
       case "previous":
-        this.previousTrack();
+        this._previousTrack();
         break;
     }
 
@@ -223,16 +222,16 @@ Speaker.prototype.rewindTrack = function(rewindDirection) {
     const rewindTime = Math.random().toFixed(1) * 10;
     switch (rewindDirection) {
       case "forward":
-        this.rewindForward(rewindTime);
+        this._rewindForward(rewindTime);
         break;
       case "back":
-        this.rewindBack(rewindTime);
+        this._rewindBack(rewindTime);
         break;
     }
   }
 };
 
-Speaker.prototype.rewindForward = function(time) {
+Speaker.prototype._rewindForward = function(time) {
   // if lost time + rewind time less than song duration, start playing from new time position
   if (
     this._currentTimerValue + time <
@@ -246,7 +245,7 @@ Speaker.prototype.rewindForward = function(time) {
   }
 };
 
-Speaker.prototype.rewindBack = function(time) {
+Speaker.prototype._rewindBack = function(time) {
   this._stopPlaying();
 
   // if lost time - rewind time more than 0, start playing from new time position
