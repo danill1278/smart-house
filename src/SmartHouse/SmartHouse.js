@@ -104,15 +104,16 @@ SmartHouse.prototype.addDevice = function(device) {
   let rules = Object.keys(matchObj);
 
   let validStatus = rules.every(rule => {
-    if ( matchObj[rule].func(device) ) {
+    if (matchObj[rule].func(device)) {
       return true;
     } else {
       if (matchObj[rule].error) {
         matchObj[rule].error();
       }
       return false;
-    }    
+    }
   })
+};
 
   if ( validStatus ) {
     this._devices.push(device);
