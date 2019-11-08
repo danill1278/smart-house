@@ -4,7 +4,7 @@ class Device {
         #state: Boolean
         #timer: Number
     methods:
-        +constructor(name: string): void
+        +constructor(name: string)
         +toString(): string
         +get state(): Boolean
         +get name(): String

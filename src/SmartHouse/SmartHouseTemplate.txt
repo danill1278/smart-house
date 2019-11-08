@@ -3,7 +3,7 @@ Class SmartHouse {
         #name: string
         #devices: array
     methods:
-        +constructor(name: string): void
+        +constructor(name: string)
         +onAll: void
         +offAll: void
         #checkName: Boolean

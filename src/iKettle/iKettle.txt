@@ -8,7 +8,7 @@ Class iKettle {
 		#currentFullness: Number = 0
 		#minFullness: Number
 	Methods:  
-		+constructor(name: string): void
+		+constructor(name: string)
         +boilWater(): void
 		+nextMode(): void
 		+previousMode(): void

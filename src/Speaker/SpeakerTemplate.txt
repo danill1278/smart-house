@@ -11,11 +11,11 @@ class Speaker {
         }],
         #currentTrack: Number 0
     methods:
-        +constructor( name: String, trackList: [Object] ): void
+        +constructor( name: String, trackList: [Object] )
         +togglePlaybackStatus(): void
         #startPlaying(): void
         #stopPlaying(): void
-        +get PlayPauseState(): Boolean     
+        +get PlayPauseState(): Boolean
         +toggleTrack(String): void
         #nextTrack(): void
         #previousTrack(): void
