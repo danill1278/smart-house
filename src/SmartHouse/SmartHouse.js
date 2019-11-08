@@ -56,7 +56,6 @@ SmartHouse.prototype.deleteDevicesByModel = function(obj) {
 };
 
 SmartHouse.prototype._isNameUnic = function(name) {
-  
   let result = this._devices.find(device => {
     if (device.getName() === name) {
       return true;
@@ -89,25 +88,26 @@ SmartHouse.prototype.getName = function() {
 SmartHouse.prototype.addDevice = function(device) {
   let matchObj = {
     trueInstance: {
-      func: (obj) =>  obj instanceof Device,
-      error: () =>  {Logger.error("Devices must be objects of iKettle or Speaker");}
+      func: obj => obj instanceof Device,
+      error: () => {
+        Logger.error("Devices must be objects of iKettle or Speaker");
+      }
     },
     checkNameValidity: {
-      func: (obj) => this._checkName(obj.getName())
+      func: obj => this._checkName(obj.getName())
     },
     unicOfName: {
-      func: (obj) => this._isNameUnic(obj.getName()), 
-      error: () => {Logger.error("Device's name must be unic");}
+      func: obj => this._isNameUnic(obj.getName()),
+      error: () => {
+        Logger.error("Device's name must be unic");
+      }
     }
-  }
+  };
   let rules = Object.keys(matchObj);
   let rulesCount = rules.length;
   let loopCounter = 0;
 
-  
-
   while (loopCounter < rulesCount) {
-    
     if (matchObj[rules[loopCounter]].func(device)) {
       loopCounter++;
     } else {
@@ -116,7 +116,6 @@ SmartHouse.prototype.addDevice = function(device) {
       break;
     }
   }
-
 
   if (loopCounter === rulesCount) {
     this._devices.push(device);
