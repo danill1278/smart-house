@@ -1,4 +1,5 @@
 import { Logger } from "../../Utilities/Logger/Logger";
+import { regex } from "../../shared/constants";
 
 export const Device = function(name) {
   this._state = false;
@@ -24,6 +25,7 @@ Device.prototype.setName = function(name) {
 Device.prototype._isDeviceOn = function() {
   if (!this.getState()) {
     Logger.error("Turn on device, please!");
+    return false;
   }
   return true;
 };
@@ -34,7 +36,6 @@ Device.prototype._checkNameValidity = function(name) {
     return false;
   }
   name = name.trim();
-  const regex = /[\w\d\s]{5,10}/;
   const result = regex.test(name);
   if (!result) {
     Logger.error("Name must include more than 5 characters");

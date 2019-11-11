@@ -4,7 +4,7 @@ class Speaker {
         #volumeMin: Number 0,
         #volumeMax: Number 10,
         #currentVolume: Number 5,
-        #currentTimerValue: Number null,
+        #currentTimerValue: Number 0,
         #trackList: [Object] [{
             name: String ,
             duration: Number

@@ -1,5 +1,6 @@
 import { Device } from "../BaseDevices/Device/Device";
 import { Logger } from "../Utilities/Logger/Logger";
+import {regex} from '../shared/constants';
 
 export const SmartHouse = function(name) {
   if (this._checkName(name)) {
@@ -23,19 +24,14 @@ SmartHouse.prototype.deleteAllDevices = function() {
 
 SmartHouse.prototype.getAllDevicesByModel = function(obj) {
   return this._devices.filter(device => {
-    if (device instanceof obj) {
-      return true;
-    }
-    return false;
+    return device instanceof obj;
   });
 };
 
 SmartHouse.prototype.getDeviceByName = function(name) {
   if (typeof name === "string" && name.length) {
     let device = this._devices.find(device => {
-      if (device.getName() === name) {
-        return true;
-      }
+      return device.getName() === name;
     });
 
     if (!device) {
@@ -55,11 +51,9 @@ SmartHouse.prototype.deleteDevicesByModel = function(obj) {
   this._devices = result;
 };
 
-SmartHouse.prototype._isNameUnic = function(name) {
+SmartHouse.prototype._isNameUnique = function(name) {
   const result = this._devices.find(device => {
-    if (device.getName() === name) {
-      return true;
-    }
+    return device.getName() === name;
   });
   
   return !result;
@@ -71,7 +65,6 @@ SmartHouse.prototype._checkName = function(name) {
     return false;
   }
   name = name.trim();
-  const regex = /[\w\d\s]{5,10}/;
   const result = regex.test(name);
 
   if (!result) {
@@ -94,10 +87,10 @@ SmartHouse.prototype.addDevice = function(device) {
         Logger.error("Devices must be objects of iKettle or Speaker");
       }
     },
-    unicOfName: {
-      func: obj => this._isNameUnic(obj.getName()),
+    nameUniqueness: {
+      func: obj => this._isNameUnique(obj.getName()),
       error: () => {
-        Logger.error("Device's name must be unic");
+        Logger.error("Device's name must be unique");
       }
     }
   };
@@ -112,10 +105,9 @@ SmartHouse.prototype.addDevice = function(device) {
       }
       return false;
     }
-  })
-};
+  });
 
-  if ( validStatus ) {
+  if (validStatus) {
     this._devices.push(device);
   }
 };
