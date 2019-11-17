@@ -1,12 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   mode: "development",
   entry: {
-    app: "./src/index.js"
+    app: "./src/index.ts"
   },
   output: {
     filename: "[name].bundle.js",
@@ -34,9 +33,14 @@ module.exports = {
       ],
     },
     { 
+      test: /\.ts$/,
+      exclude: /node_modules/,
+      loader: "awesome-typescript-loader"
+    },
+    { 
       test: /\.js$/,
       exclude: /node_modules/,
-      loader: "babel-loader"
+      loader: ["babel-loader", "source-map-loader"]
     }]
   },
   devtool: "inline-source-map",
@@ -49,5 +53,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: "Output Management"
     })
-  ]
+  ],
+  resolve: {
+    extensions: ['.ts', '.js', '.json']
+  }
 };
