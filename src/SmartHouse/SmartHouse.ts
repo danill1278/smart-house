@@ -1,50 +1,33 @@
-import { Device } from "../BaseDevices/Device/Device";
-import { Logger } from "../Utilities/Logger/Logger";
-import { regex } from "../shared/constants";
+import Logger from "../Utilities/Logger/Logger";
+import NameValidityChecker from '../shared/NameValidityChecker/NameValidityChecker';
 import { DeviceInterface } from '../BaseDevices/Device/types';
-import { SmartHouseInterface } from './types';
 import * as Collections from 'typescript-collections';
 
-
-export class SmartHouse<T extends DeviceInterface> implements SmartHouseInterface<DeviceInterface> {
+export class SmartHouse<T extends DeviceInterface> {
     private name: string;
-    private devices;
-    constructor(name: string) {
-        if (this.checkName(name)) {
+    private devices: Collections.Dictionary<string, T>;
+
+    constructor(name: string = 'Smart House') {
+        if (NameValidityChecker(name)) {
             this.name = name;
             this.devices = new Collections.Dictionary<string, T>();
         }
-    }
-
-    /////////////////////////////////////////
-    private checkName = function(name) {
-        if (typeof name !== "string") {
-        Logger.warning("Name must be a string");
-        return false;
-        }
-        name = name.trim();
-        const result = regex.test(name);
-    
-        if (!result) {
-        Logger.warning("Name must include more than 5 characters");
-        return false;
-        } else {
-        return true;
-        }
     };
-    //////////////
-    onAll() {
+
+    onAll(): void {
         this.devices.forEach( (deviceName, device) => device.on());
-    }
-    offAll() {
+    };
+
+    offAll(): void {
         this.devices.forEach((deviceName, device) => device.off());
     };
-    deleteAllDevices() {
+
+    deleteAllDevices(): void {
         this.offAll();
         this.devices.clear();        
     };
 
-    getAllDevicesByModel( Model ) {
+    getAllDevicesByModel( Model: Function ): Array<T> | [] {
         let resultDevices = [];
         
         this.devices.forEach((deviceName, device) => {
@@ -56,22 +39,21 @@ export class SmartHouse<T extends DeviceInterface> implements SmartHouseInterfac
         return resultDevices;
     };
 
-
-    getDeviceByName(name: string) {
+    getDeviceByName(name: string): T | null {
         if ( name.length ) {
             let device = this.devices.getValue(name);            
             if (!device) {
                 Logger.warning("There is no device with this name");
-                return false;
+                return null;
             }
             return device;
         } else {
             Logger.warning("Please, enter valid device name");
-            return false;
+            return null;
         }
-    }
+    };
 
-    deleteDevicesByModel = function(Model) {
+    deleteDevicesByModel(Model): void {
         this.devices.forEach( (deviceName, device) => {
             if ( device instanceof Model ) {
                 this.devices.remove(deviceName);
@@ -79,15 +61,15 @@ export class SmartHouse<T extends DeviceInterface> implements SmartHouseInterfac
         });
     };
 
-    private isNameUnique = function(name) {
+    private isNameUnique(name: string): boolean {
         return !this.devices.containsKey(name);
     };
 
-    getName() {
+    getName(): string {
         return this.name;
     };
 
-    addDevice(device: T) {
+    addDevice(device: T): void {
         if ( this.isNameUnique(device.getName()) ) {
             this.devices.setValue(device.getName(), device);
         } else {
@@ -95,13 +77,13 @@ export class SmartHouse<T extends DeviceInterface> implements SmartHouseInterfac
         }
     };
 
-    deleteDeviceByName(name: string) {
+    deleteDeviceByName(name: string): void {
         this.devices.remove(name);
-    } 
+    };
 
-    getAllDevices() {
+    getAllDevices(): Array<T> | [] {
         return [...this.devices.values()];
-    }
+    };
 }
 
 export default SmartHouse;

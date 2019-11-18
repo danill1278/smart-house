@@ -1,5 +1,5 @@
 import { Device } from "../BaseDevices/Device/Device";
-import { Logger } from "../Utilities/Logger/Logger";
+import Logger from "../Utilities/Logger/Logger";
 
 export class iKettle extends Device {
   private modes: Array<object>;
@@ -32,8 +32,7 @@ currentFullness: ${this.currentFullness};
 `;
   };
   off(): void {
-    super.off();
-    this.deleteTimer();
+    super.off();    
     this.currentTemperature = 26;
   };
   nextMode(): void {
@@ -74,10 +73,10 @@ currentFullness: ${this.currentFullness};
     return this.currentFullness;
   };
 
-  boilWater(): object {
+  boilWater(): Promise<void> {
     if (this.isDeviceOn() && this.currentFullness) {
       return new Promise(resolve => {
-        this.timer = setInterval(() => {
+        this.timer = <any>setInterval(() => {
           if (
             this.currentTemperature >=
             Object.values(this.modes[this.currentMode])[0]

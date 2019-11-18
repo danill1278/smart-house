@@ -1,5 +1,5 @@
 import { Device } from "../BaseDevices/Device/Device";
-import { Logger } from "../Utilities/Logger/Logger";
+import Logger from "../Utilities/Logger/Logger";
 import { trackListItemInterface } from './types';
 
 export class Speaker extends Device {
@@ -52,7 +52,7 @@ export class Speaker extends Device {
     this.trackList = trackList;
   }
 
-  off() {
+  off(): void {
     if (this.isDeviceOn()) {
       // set device in pause mode
       this.playbackState = false;
@@ -120,25 +120,26 @@ currentTime: ${this.currentTimerValue}s
       };
   
       // set async time counter
-      this.timer = setInterval(tic.bind(this), 1000);
+      this.timer = <any>setInterval(tic.bind(this), 1000);
     }
   };
 
   //safety methods
   //check is device playing track now
-  private isDeviceInPlayingModeNow():void {
+  private isDeviceInPlayingModeNow(): boolean {
     if (!this.playbackState) {
-      Logger.warning(
+      Logger.error(
         "Toggle device to playing mode before starting this operation"
       );
     }
+    return this.playbackState;
   }
   
   getPlayPauseState(): boolean {
       return this.playbackState;
   };
 
-  private nextTrack() {
+  private nextTrack(): void {
     // if there is some more track in track list start next
     if (this.currentTrack < this.trackList.length - 1) {
       this.currentTrack++;
@@ -148,7 +149,7 @@ currentTime: ${this.currentTimerValue}s
     }
   };
 
-  private previousTrack() {
+  private previousTrack(): void {
     // if there is some more track in track list start next
     if (this.currentTrack > 0) {
       this.currentTrack--;
@@ -158,10 +159,10 @@ currentTime: ${this.currentTimerValue}s
     }
   };
   
-  toggleTrack = function(toggleDirection: string) {
+  toggleTrack(toggleDirection: string): void {
     if (this.isDeviceOn()) {
       if (toggleDirection !== "next" && toggleDirection !== "previous") {
-        Logger.warning("Please pass 'next' or 'previous' value as a parameter");
+        Logger.error("Please pass 'next' or 'previous' value as a parameter");
       }
   
       // delete old timer
@@ -183,13 +184,13 @@ currentTime: ${this.currentTimerValue}s
     }
   }
 
-  rewindTrack(rewindDirection: string) {
+  rewindTrack(rewindDirection: string): void {
     if (this.isDeviceOn()) {
       this.isDeviceOn();
       //rewind only if device playing now
       this.isDeviceInPlayingModeNow();  
       if ( rewindDirection !== "forward" && rewindDirection !== "back" ) {
-        Logger.warning(
+        Logger.error(
           "Please pass 'forward' or 'back' string value as a parameter"
         );
       }
@@ -206,7 +207,7 @@ currentTime: ${this.currentTimerValue}s
     }
   };
 
-  private rewindForward(time: number) {
+  private rewindForward(time: number): void {
     // if lost time + rewind time less than song duration, start playing from new time position
     if (
       this.currentTimerValue + time <
@@ -220,7 +221,7 @@ currentTime: ${this.currentTimerValue}s
     }
   };
 
-  private rewindBack(time) {
+  private rewindBack(time): void {
     this.stopPlaying();
   
     // if lost time - rewind time more than 0, start playing from new time position
@@ -232,7 +233,7 @@ currentTime: ${this.currentTimerValue}s
     }
   };
 
-  increaseVolume() {
+  increaseVolume(): void {
     if (this.isDeviceOn()) {
       // checks that the value does not go beyond the predefined limits
       if (this.currentVolume < this.volumeMax) {
@@ -241,7 +242,7 @@ currentTime: ${this.currentTimerValue}s
     }
   };
 
-  decreaseVolume() {
+  decreaseVolume(): void {
     if (this.isDeviceOn()) {
       this.isDeviceOn();
   

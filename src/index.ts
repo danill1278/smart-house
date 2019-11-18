@@ -11,9 +11,8 @@ declare global {
     }
 }
 
+
 window.sh = new SmartHouse<DeviceInterface>('Smart House');
+
 window.Speaker = Speaker;
 window.iKettle = iKettle;
-
-
-

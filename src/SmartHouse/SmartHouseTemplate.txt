@@ -6,12 +6,11 @@ Class SmartHouse {
         +constructor(name: string)
         +onAll: void
         +offAll: void
-        -checkName: Boolean
         -isNameUnic: Boolean
         +getName(): string
         +addDevice(obj): void
         +getAllDevices(): Array
-        +getDeviceByName(): Obj
+        +getDeviceByName(): Obj | null
         +getAllDevicesByModel(obj): Array
         +deleteDevicesByModel(obj): void
         +deleteDeviceByName(string): void

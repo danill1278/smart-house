@@ -1,4 +1,4 @@
-export const Logger = {
+const Logger = {
   warning: function(text) {
     console.warn(text);
   },
@@ -6,3 +6,5 @@ export const Logger = {
     throw new Error(text);
   }
 };
+
+export default Logger;

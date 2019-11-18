@@ -1,6 +1,5 @@
 Class iKettle {
 	Properties:
-		-name: String
 		-modes: Array
 		-currentMode: Number
 		-currentTemperature: Number = 26

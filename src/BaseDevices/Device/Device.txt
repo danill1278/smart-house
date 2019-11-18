@@ -1,7 +1,7 @@
 class Device {
     properties:
-        #name: String,
-        #state: Boolean
+        #state: Boolean,
+        #name: String,        
         #timer: Number
     methods:
         +constructor(name: string)
@@ -12,6 +12,5 @@ class Device {
         +on(): voids
         +off(): void
         #isDeviceOn(): Boolean
-        #checkNameValidity(): Boolean
         #deleteTimer(): void
 }

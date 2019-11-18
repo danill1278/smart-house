@@ -4,5 +4,4 @@ export interface DeviceInterface{
     setName(name: string): void;
     on(): void;
     off(): void;
-    toString(): string;
-  }
+}
